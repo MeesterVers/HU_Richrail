@@ -31,6 +31,7 @@ public class train {
 	private int currentTrain = -1;
 	private int OFFSET = 100;
 	private int TRAINLENGTH = 100;
+	private JPanel drawPanel;
 
 	private JComboBox cbAllTrains;
 

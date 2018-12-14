@@ -192,6 +192,8 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 	
 	public void actionPerformed(ActionEvent event)
 	{
+		Integer currentNumberOfWagons;
+		int currentTrain;
 		if (event.getSource()== btnNewTrain)
 		{
 			String train = tfNewTrain.getText();
@@ -211,12 +213,12 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 				int ti = cbAllTrains.getSelectedIndex();
 				if (ti != trainInst.getCurrentTrain())
 				{
-					trainInst.getCurrentNumberOfWagons().put(trainInst.getCurrentTrain(), trainInst.getCurrentNumberOfWagons());
+					trainInst.getCurrentNumberOfWagons();
 				}
 				trainInst.setCurrentTrain(ti);
 				try
 				{
-					currentNumberOfWagons = (Integer) numberOfWagons.get(currentTrain);
+					currentNumberOfWagons = (Integer) trainInst.getNumberOfWagons().get(trainInst.getCurrentTrain());
 				}
 				catch (Exception e)
 				{
@@ -230,7 +232,7 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 			{
 				String t = (String)cbAllTrains.getSelectedItem();
 				cbAllTrains.removeItemAt(cbAllTrains.getSelectedIndex());
-				numberOfWagons.remove(t);
+				trainInst.getNumberOfWagons().remove(t);
 				repaint();
 				if ((String)cbAllTrains.getSelectedItem() != null)
 				{
@@ -247,12 +249,12 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 		else if (event.getSource() == btnAddWagon1)
 		{
 			currentNumberOfWagons++;
-			drawWagon("Wagon1");
+			trainInst.drawTrain("Wagon1");
 		}
 		else if (event.getSource() == btnAddWagon2)
 		{
-			trainInst.getCurrentNumberOfWagons() + 1;
-			drawWagon("Wagon2");
+			currentwagons(1 + trainInst.getCurrentNumberOfWagons());
+			trainInst.drawTrain("Wagon2");
 		}
 		else if (event.getSource() == jButton1)
 		{
@@ -261,15 +263,20 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 		}
 		else if (event.getSource() == btnDeleteWagon1)
 		{
-			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);
+			repaint(30+trainInst.getTRAINLENGTH(),80+currentTrain*trainInst.getOFFSET(),1,1);
 		}
 		else if (event.getSource() == btnDeleteWagon2)
 		{
-			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);		
+			repaint(30+trainInst.getTRAINLENGTH(),80+currentTrain*trainInst.getOFFSET(),1,1);		
 		}
 		else if (event.getSource() == btnDeleteWagon3)
 		{
-			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);		
+			repaint(30+trainInst.getTRAINLENGTH(),80+currentTrain*trainInst.getOFFSET(),1,1);		
 		}
+	}
+
+	private void currentwagons(int i) {
+		// TODO Auto-generated method stub
+		
 	}
 }
