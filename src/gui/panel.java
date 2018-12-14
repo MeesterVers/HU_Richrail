@@ -213,7 +213,7 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 				int ti = cbAllTrains.getSelectedIndex();
 				if (ti != trainInst.getCurrentTrain())
 				{
-					trainInst.getCurrentNumberOfWagons();
+					trainInst.getCurrentNumberOfWagons().put(trainInst.getCurrentTrain(), trainInst.getCurrentNumberOfWagons());
 				}
 				trainInst.setCurrentTrain(ti);
 				try
