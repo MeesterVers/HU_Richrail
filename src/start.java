@@ -1,6 +1,7 @@
 import javax.swing.SwingUtilities;
 
 import gui.panel;
+import gui.panel2;
 
 class start{
 	public static void main(String[] args) {
@@ -8,7 +9,7 @@ class start{
 		{
 			public void run() 
 			{
-				panel inst = new panel();
+				panel2 inst = new panel2();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
