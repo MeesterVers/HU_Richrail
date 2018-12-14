@@ -183,7 +183,7 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 			}
 			pack();
 			setSize(800, 600);
-			numberOfWagons = new HashMap();
+			int numberOfWagons = trainInst.getCurrentNumberOfWagons();
 		} catch (Exception e) 
 		{
 			e.printStackTrace();
@@ -197,9 +197,9 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 			String train = tfNewTrain.getText();
 			if (train != null && train.trim().length()>0)
 			{
-				train = addTrain(train);
-				currentTrain = cbAllTrains.getSelectedIndex();
-				drawTrain(train);
+				train = trainInst.addTrain(train);
+				trainInst.setCurrentTrain(cbAllTrains.getSelectedIndex());
+				trainInst.drawTrain(train);
 			}
 		}
 		else if (event.getSource() == btnChooseTrain)
@@ -209,18 +209,18 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 				String selection = (String)cbAllTrains.getSelectedItem();
 				tfCurrentTrain.setText("selected: " + selection);
 				int ti = cbAllTrains.getSelectedIndex();
-				if (ti != currentTrain)
+				if (ti != trainInst.getCurrentTrain())
 				{
-					numberOfWagons.put(currentTrain, currentNumberOfWagons);
+					trainInst.getCurrentNumberOfWagons().put(trainInst.getCurrentTrain(), trainInst.getCurrentNumberOfWagons());
 				}
-				currentTrain = ti;
+				trainInst.setCurrentTrain(ti);
 				try
 				{
 					currentNumberOfWagons = (Integer) numberOfWagons.get(currentTrain);
 				}
 				catch (Exception e)
 				{
-					currentNumberOfWagons = 0;
+					trainInst.setCurrentNumberOfWagons(0);
 				}			
 			}
 		}
@@ -251,13 +251,13 @@ public class panel extends javax.swing.JFrame implements ActionListener{
 		}
 		else if (event.getSource() == btnAddWagon2)
 		{
-			currentNumberOfWagons++;
+			trainInst.getCurrentNumberOfWagons() + 1;
 			drawWagon("Wagon2");
 		}
 		else if (event.getSource() == jButton1)
 		{
 			currentNumberOfWagons++;
-			drawWagon("Wagon3");
+			wagonInst.drawWagon("Wagon3");
 		}
 		else if (event.getSource() == btnDeleteWagon1)
 		{
