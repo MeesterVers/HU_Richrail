@@ -112,9 +112,8 @@ public class train extends javax.swing.JFrame {
 
 	}
 
-	public void drawTrain(String train) {
+	public void drawTrain(String train, Graphics g) {
 		if (train != "") {
-			Graphics g = drawPanel.getGraphics();
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(30,80+currentTrain*OFFSET,80,40);
 			g.fillRect(80,60+currentTrain*OFFSET,30,30);

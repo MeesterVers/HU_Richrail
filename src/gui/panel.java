@@ -95,7 +95,7 @@ public class panel extends javax.swing.JFrame implements ActionListener
 	{
 		try 
 		{
-			this.setTitle("PoorRail");
+			this.setTitle("RichRail");
 			GridBagLayout thisLayout = new GridBagLayout();
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			thisLayout.rowWeights = new double[] {0.1, 0.1, 0.1, 0.1};
@@ -232,7 +232,8 @@ public class panel extends javax.swing.JFrame implements ActionListener
 			{
 				train = trainInst.addTrain(train);
 				currentTrain = trainDropDown.getSelectedIndex();
-				trainInst.drawTrain(train);
+				Graphics g = mainScreen.getGraphics();
+				trainInst.drawTrain(train, g);
 			}
 		}
 		else if (event.getSource() == btnChooseTrain)
@@ -280,17 +281,20 @@ public class panel extends javax.swing.JFrame implements ActionListener
 		else if (event.getSource() == btnAddWagon1)
 		{
 			currentNumberOfWagons++;
-			wagonInst.drawWagon("Wagon1");
+			Graphics g = mainScreen.getGraphics();
+			wagonInst.drawWagon("Wagon1", g);
 		}
 		else if (event.getSource() == btnAddWagon2)
 		{
 			currentNumberOfWagons++;
-			wagonInst.drawWagon("Wagon2");
+			Graphics g = mainScreen.getGraphics();
+			wagonInst.drawWagon("Wagon2", g);
 		}
 		else if (event.getSource() == btnAddWagon3)
 		{
 			currentNumberOfWagons++;
-			wagonInst.drawWagon("Wagon3");
+			Graphics g = mainScreen.getGraphics();
+			wagonInst.drawWagon("Wagon3", g);
 		}
 		else if (event.getSource() == btnDeleteWagon1)
 		{

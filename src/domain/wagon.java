@@ -38,8 +38,7 @@ public class wagon extends javax.swing.JFrame {
 
 	}
 
-	public void drawWagon(String wagon) {
-		Graphics g = drawPanel.getGraphics();
+	public void drawWagon(String wagon, Graphics g) {
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(30+currentNumberOfWagons*TRAINLENGTH,80+currentTrain*OFFSET,80,40);
 		g.setColor(Color.BLACK);
