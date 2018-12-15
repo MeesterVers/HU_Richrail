@@ -26,7 +26,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.SwingUtilities;
 
-public class wagon {
+public class wagon extends javax.swing.JFrame {
 	private HashMap numberOfWagons;
 	private int currentNumberOfWagons;
 	private int currentTrain = -1;

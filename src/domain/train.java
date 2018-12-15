@@ -25,7 +25,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.SwingUtilities;
 
-public class train {
+public class train extends javax.swing.JFrame {
 	private HashMap numberOfWagons;
 	private int currentNumberOfWagons;
 	private int currentTrain = -1;
@@ -113,8 +113,7 @@ public class train {
 	}
 
 	public void drawTrain(String train) {
-		if (train != "")
-		{
+		if (train != "") {
 			Graphics g = drawPanel.getGraphics();
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(30,80+currentTrain*OFFSET,80,40);
