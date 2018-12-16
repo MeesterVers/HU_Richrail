@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class Train {
 	private String name;
 	private ArrayList<Wagon> wagons = new ArrayList<Wagon>();
-			
 	public Train(String name) {	
 		this.name = name;			
 	}
@@ -42,7 +41,7 @@ public class Train {
 
 	@Override
 	public String toString() {
-		return "Train name: " + name + ", wagons: " + wagons.toString();
+		return "Train name: " + name;
 	}
 	
 	

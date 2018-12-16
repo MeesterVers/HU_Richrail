@@ -156,7 +156,7 @@ public class Controller {
 	
 	public String getAllTrains() {
 		if (!railroad.getTrains().isEmpty()) {
-			return "All trains \n" + railroad.getTrains().toString();
+			return "All trains \n" + railroad.getTrains().toString() + railroad.getWagons().toString();
 		}else {
 			return "No trains";
 		}
