@@ -38,10 +38,13 @@ public class Controller {
 	 */
 	public String createWagon(String name) {
 		Wagon newWagon = new Wagon(name);
+
 		if(!wagonExists(newWagon)) {
 			railroad.addWagon(newWagon);
 			return "Wagon " + name + " created";
-		} else return "Wagon " + name + " already exists";		
+		} else { 
+			return "Wagon " + name + " already exists"; 
+		}		
 	}
 	
 	
@@ -56,6 +59,7 @@ public class Controller {
 	 */
 	public String createWagon(String name, int numseats) {
 		Wagon newWagon = new Wagon(name, numseats);
+
 		if(!wagonExists(newWagon)) {
 			railroad.addWagon(newWagon);
 			return "Wagon " + name + " created with " + numseats + " seats";
@@ -65,7 +69,7 @@ public class Controller {
 		}	
 	}
 	
-	public String addWagonToTrain(String trainName, String wagonName) {
+	public String addWagonToTrain(String wagonName, String trainName) {
 		Wagon newWagon = new Wagon(wagonName);
 		Train newTrain = new Train(trainName);
 
@@ -93,7 +97,9 @@ public class Controller {
 		if(wagonExists(new Wagon(name))) {
 			railroad.deleteWagon(name);
 			return "Wagon " + name + " deleted";
-		} else return "Wagon " + name + " does not exists";		
+		} else { 
+			return "Wagon " + name + " does not exists"; 
+		}
 	}
 	
 	
@@ -146,6 +152,14 @@ public class Controller {
 			railroad.addTrain(newTrain);
 			return "Train " + name + " created";
 		} else return "Train " + name + " already exists";		
+	}
+	
+	public String getAllTrains() {
+		if (!railroad.getTrains().isEmpty()) {
+			return "All trains \n" + railroad.getTrains().toString();
+		}else {
+			return "No trains";
+		}
 	}
 	
 	

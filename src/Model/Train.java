@@ -39,4 +39,11 @@ public class Train {
 		}
 		return numseatsTotal;		
 	}
+
+	@Override
+	public String toString() {
+		return "Train name: " + name + ", wagons: " + wagons.toString();
+	}
+	
+	
 }

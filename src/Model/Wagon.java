@@ -21,4 +21,10 @@ public class Wagon {
 	public int getnumSeats() {
 		return this.numseats; 
 	}
+
+	@Override
+	public String toString() {
+		return "Wagon name=" + name + ", number of seats=" + numseats;
+	}
+	
 }

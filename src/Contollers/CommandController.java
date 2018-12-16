@@ -60,7 +60,9 @@ public class CommandController {
 				return ControllerInst.deleteWagon(parameters.get(0));
 			
 			case 8:				// remove wagon from train
-				return  "";			
+				return  "";	
+			case 9:
+				return ControllerInst.getAllTrains();
 		}		
 		
 		return "No valid command";
@@ -85,7 +87,8 @@ public class CommandController {
 		if(command.matches("(delete)\\s(train)\\s[\\w]+")) 						return 6;		// Delete Train
 		if(command.matches("(delete)\\s(wagon)\\s[\\w]+")) 						return 7;		// Delete Wagon
 		if(command.matches("(remove)\\s[\\w]+\\s(from)\\s[\\w]+")) 				return 8;		// Remove Wagon From Train
-			
+		if(command.matches("get all trains")) 				                        return 9;		// Get all trains
+		
 		return -1;		// No correct command
 	}
 	
