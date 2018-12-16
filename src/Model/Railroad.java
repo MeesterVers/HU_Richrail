@@ -36,10 +36,24 @@ public class Railroad {
 	}
 	
 	
+	public void removeWagon(Wagon wagonName, Train trainName) {
+		for(Train t : trains) {
+			if(t.getName().equals(t)) {
+				for(Wagon wagon : t.getWagons()) {
+					if(wagon.getName().equals(wagonName)) {
+						t.getWagons().remove(wagon);
+					}
+				}
+			}
+		}
+	}
+	
 	public void deleteWagon(String name) {
 		for(int i = 0; i < wagons.size(); i++) {
 			Wagon wagon = wagons.get(i);
-			if(wagon.getName().equals(name)) wagons.remove(i);			
+			if(wagon.getName().equals(name)) { 
+				wagons.remove(i);
+			}		
 		}
 	}
 	

@@ -102,6 +102,23 @@ public class Controller {
 		}
 	}
 	
+	public String removeWagon(String wagonName, String trainName) {
+		Wagon newWagon = new Wagon(wagonName);
+		Train newTrain = new Train(trainName);
+
+		if(wagonExists(newWagon)) {
+			if(trainExists(newTrain)){
+				railroad.removeWagon(newWagon, newTrain);
+				return "Wagon " + newWagon + " removed from train " + newTrain;
+			} else { 
+				return "Wagon " + newWagon + " does not exists"; 
+			}
+		} else {
+			return "Train " + newTrain + " does not exists"; 
+		}
+	}
+	
+	
 	
 	
 	/**	
