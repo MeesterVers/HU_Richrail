@@ -26,7 +26,8 @@ import Model.Railroad;
 @SuppressWarnings("serial")
 public class Start extends javax.swing.JFrame implements ActionListener {
 	
-	private JButton ExecuteButton;	
+	private JButton ExecuteButton;
+	private JButton changeGui;
 	private JPanel RightPanel;
 	private JPanel LeftPanel;
 	private JPanel drawPanel;
@@ -152,6 +153,11 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			rightOutput.setEditable(false);			
 			RightPanel.add(rightOutput, new GridBagConstraints(0, 0, 4, 3, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 			
+			// changeGui Button			
+			changeGui = new JButton();
+			RightPanel.add(changeGui, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			changeGui.setText("ChangeGui");
+			changeGui.addActionListener(this);
 			
 			pack();
 			setSize(1000, 800);
@@ -177,6 +183,10 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			responseOutput(response);
 		}
 	}
+	
+	public void changeGui(ActionEvent event) {
+		}
+
 	
 	
 	
