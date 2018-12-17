@@ -1,6 +1,11 @@
 package Model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.sql.SQLException;
+
+import Dao.TrainDaoImpl;
 
 public class Railroad {
 	private ArrayList<Train> trains;
@@ -12,18 +17,24 @@ public class Railroad {
 		wagons = new ArrayList<Wagon>();
 	}
 
-	public ArrayList<Train> getTrains() {
-		return trains;
+	public List<Train> getTrains() throws SQLException {
+		TrainDaoImpl trainService = new TrainDaoImpl();
+		return trainService.findAll();
 	}
 	
-	public void addTrain(Train train) {
-		trains.add(train);
+	public void addTrain(Train train) throws SQLException {
+		TrainDaoImpl trainService = new TrainDaoImpl();
+		if(trainService.save(train)) {
+			trains.add(train);
+		}
 	}
 	
 	public void removeTrain(String name) {
 		for(int i = 0; i < trains.size(); i++) {
 			Train train = trains.get(i);
-			if(train.getName().equals(name)) trains.remove(i);			
+			if(train.getName().equals(name)) { 
+				trains.remove(i); 
+			}			
 		}	
 	}
 	

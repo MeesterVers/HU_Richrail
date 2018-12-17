@@ -4,12 +4,19 @@ import java.util.ArrayList;
 
 
 public class Train {
+	private int ID;
 	private String name;
+	
 	private ArrayList<Wagon> wagons = new ArrayList<Wagon>();
 	public Train(String name) {	
 		this.name = name;			
 	}
 	
+	public Train(int iD, String name) {
+		this.ID = ID;
+		this.name = name;
+	}
+
 	public void addWagon(Wagon wagon) {
 		this.wagons.add(wagon);		
 	}

@@ -74,7 +74,7 @@ public class Controller {
 		}	
 	}
 	
-	public String addWagonToTrain(String wagonName, String trainName) {
+	public String addWagonToTrain(String wagonName, String trainName) throws SQLException {
 		Wagon newWagon = new Wagon(wagonName);
 		Train newTrain = new Train(trainName);
 
@@ -107,7 +107,7 @@ public class Controller {
 		}
 	}
 	
-	public String removeWagon(String wagonName, String trainName) {
+	public String removeWagon(String wagonName, String trainName) throws SQLException {
 		Wagon newWagon = new Wagon(wagonName);
 		Train newTrain = new Train(trainName);
 
@@ -174,9 +174,6 @@ public class Controller {
 			railroad.setSelectedTrain(newTrain);
 			railroad.addTrain(newTrain);
 			
-			TrainDaoImpl trainService = new TrainDaoImpl();
-			trainService.save(newTrain);
-			
 			return "Train " + name + " created";
 			
 		} else { 
@@ -184,7 +181,7 @@ public class Controller {
 		}	
 	}
 	
-	public String getAllTrains() {
+	public String getAllTrains() throws SQLException {
 		if (!railroad.getTrains().isEmpty()) {
 			return "All trains \n" + railroad.getTrains().toString() + railroad.getWagons().toString();
 		}else {
@@ -197,11 +194,12 @@ public class Controller {
 	/**
 	 * @param name : String
 	 * @return String for the response output
+	 * @throws SQLException 
 	 * 
 	 * @Description Deletes the train with the given
 	 * name, if exists
 	 */
-	public String deleteTrain(String name) {		
+	public String deleteTrain(String name) throws SQLException {		
 		if(trainExists(new Train(name))) {
 			railroad.removeTrain(name);
 			return "Train " + name + " deleted";
@@ -213,11 +211,12 @@ public class Controller {
 	/**
 	 * @param name : String
 	 * @return String for the response output
+	 * @throws SQLException 
 	 * 
 	 * @Description Returns the number of seats 
 	 * from the train with the given name
 	 */
-	public String trainNumSeats(String name) {
+	public String trainNumSeats(String name) throws SQLException {
 		for (Train train : railroad.getTrains()) {
 			if (train.getName().equals(name)) {
 				return Integer.toString(train.getNumSeats());
@@ -231,11 +230,12 @@ public class Controller {
 	/**	
 	 * @param t : Train
 	 * @return boolean if train exists
+	 * @throws SQLException 
 	 * 
 	 * @Description Checks if the given train exists in the 
 	 * array from the class railroad
 	 */
-	public boolean trainExists(Train t) {
+	public boolean trainExists(Train t) throws SQLException {
 		for(Train train : railroad.getTrains()) {
 			if(train.getName().equals(t.getName())) return true;	
 		}

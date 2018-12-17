@@ -31,8 +31,24 @@ public class TrainDaoImpl extends BaseDao implements TrainDao{
 
 	@Override
 	public List<Train> findAll() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Train> trains = new ArrayList<Train>();
+		conn = BaseDao.getConnection();
+		
+		String query = "SELECT * FROM trains";
+		Statement statement = conn.createStatement();
+		ResultSet result = statement.executeQuery(query);
+		
+		while (result.next()) {
+			int ID = result.getInt("id");
+			String name = result.getString("name");
+
+			Train train = new Train(ID, name);
+			trains.add(train);
+		}
+
+		conn.close();
+		result.close();
+		return trains;
 	}
 
 	@Override
