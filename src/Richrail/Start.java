@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -166,7 +167,13 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 		if (event.getSource() == ExecuteButton) {
 			String command = CommandField.getText();
 			leftOutput.append("<< " + command + "\n");
-			String response = cmdController.executeCommand(command);	
+			String response = null;
+			try {
+				response = cmdController.executeCommand(command);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
 			responseOutput(response);
 		}
 	}

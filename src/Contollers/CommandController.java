@@ -1,5 +1,6 @@
 package Contollers;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,11 +26,12 @@ public class CommandController {
 	/**
 	 * @param command : String 
 	 * @return String for the response output
+	 * @throws SQLException 
 	 * 
 	 * @Description Splits the command by running multiple 
 	 * methods and execute the command by their index
 	 */
-	public String executeCommand(String command) {
+	public String executeCommand(String command) throws SQLException {
 		int functionIndex = getIndexFunction(command);		
 		ArrayList<String> parameters = getParameters(command, functionIndex);
 		

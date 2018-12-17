@@ -11,6 +11,11 @@
 package Contollers;
 
 import Model.Railroad;
+
+import java.sql.SQLException;
+
+import Dao.TrainDaoImpl;
+
 import Model.Train;
 import Model.Wagon;
 
@@ -158,17 +163,25 @@ public class Controller {
 	/**
 	 * @param name : String
 	 * @return String for the response output
+	 * @throws SQLException 
 	 * 
 	 * @Description Creates a new train and adds the new train to 
 	 * an arrayList in the class railroad
 	 */
-	public String createTrain(String name) {
+	public String createTrain(String name) throws SQLException {
 		Train newTrain = new Train(name);
 		if(!trainExists(newTrain)) {
 			railroad.setSelectedTrain(newTrain);
 			railroad.addTrain(newTrain);
+			
+			TrainDaoImpl trainService = new TrainDaoImpl();
+			trainService.save(newTrain);
+			
 			return "Train " + name + " created";
-		} else return "Train " + name + " already exists";		
+			
+		} else { 
+			return "Train " + name + " already exists"; 
+		}	
 	}
 	
 	public String getAllTrains() {
