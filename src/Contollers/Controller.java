@@ -82,7 +82,8 @@ public class Controller {
 
 		if(wagonExists(newWagon)) {
 			if(trainExists(newTrain)){
-				newTrain.addWagon(newWagon);
+				railroad.addWagonTotrain(trainName, wagonName);
+//				newTrain.addWagon(newWagon);
 				return "Wagon " + wagonName + " added to train " + trainName;
 			} else {
 				return "Train " + trainName + " doesn't exists" ;
@@ -96,11 +97,12 @@ public class Controller {
 	/**
 	 * @param name : String
 	 * @return String for the response output
+	 * @throws SQLException 
 	 * 
 	 * @Description Deletes the wagon with the given
 	 * name, if exists
 	 */
-	public String deleteWagon(String name) {
+	public String deleteWagon(String name) throws SQLException {
 		if(wagonExists(new Wagon(name))) {
 			railroad.deleteWagon(name);
 			return "Wagon " + name + " deleted";
@@ -131,11 +133,12 @@ public class Controller {
 	/**	
 	 * @param w : Wagon w
 	 * @return boolean if wagon exists
+	 * @throws SQLException 
 	 * 
 	 * @Description Checks if the given wagon exists in the 
 	 * array from the class railroad
 	 */
-	public boolean wagonExists(Wagon w) {
+	public boolean wagonExists(Wagon w) throws SQLException {
 		for(Wagon wagon : railroad.getWagons()) {
 			if(wagon.getName().equals(w.getName())) { 
 				return true; 
@@ -151,11 +154,12 @@ public class Controller {
 	/**
 	 * @param name : String
 	 * @return String for the response output
+	 * @throws SQLException 
 	 * 
 	 * @Description Returns the number of seats 
 	 * from the wagon with the given name
 	 */
-	public String wagonNumSeats(String name) {
+	public String wagonNumSeats(String name) throws SQLException {
 		for (Wagon wagon : railroad.getWagons()) {
 			if (wagon.getName().equals(name)) {
 				return Integer.toString(wagon.getnumSeats());

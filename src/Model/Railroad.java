@@ -45,8 +45,10 @@ public class Railroad {
 		}	
 	}
 	
-	public List<Wagon> getWagons() {
-		return wagons;
+	public List<Wagon> getWagons() throws SQLException {
+		WagonDaoImpl wagonService = new WagonDaoImpl();
+		wagons = wagonService.findAll();
+		return wagonService.findAll();
 	}
 	
 	public void addWagon(Wagon wagon) throws SQLException {
@@ -85,6 +87,29 @@ public class Railroad {
 
 	public void setSelectedTrain(Train selectedTrain) {
 		this.selectedTrain = selectedTrain;
+	}
+
+	public void addWagonTotrain(String trainName, String wagonName) throws SQLException {
+		TrainDaoImpl trainService = new TrainDaoImpl();
+		WagonDaoImpl wagonService = new WagonDaoImpl();
+		
+		Train train = null;
+		Wagon wagon = null;
+		
+		for(Train t : getTrains()) {
+			if(t.getName().equals(trainName)) {
+				train = t;
+			}
+		}
+		
+		for(Wagon w : getWagons()) {
+			if(w.getName().equals(wagonName)) {
+				wagon = w;
+			}
+		}
+		
+		wagonService.addWagonToTrain(train, wagon);
+		
 	};
 	
 }
