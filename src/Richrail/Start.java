@@ -92,18 +92,13 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 		});
 	}
 	
-	
-	
 	public Start() {
 		super();
 		this.railroad = new Railroad();
 		this.cmdController = new CommandController(railroad);
-		initTrainGui();			
+		initCLIGUI();			
 	}
-	
 
-	
-	
 	// Create the GUI
 	private void initCLIGUI() {
 		try {
@@ -205,7 +200,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-		//Gui with trains
+	//Gui with trains
 	private void initTrainGui() {
 		try 
 		{
@@ -337,8 +332,6 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-
-
 	
 	public void actionPerformed(ActionEvent event)
 	{
@@ -354,6 +347,9 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			}	
 			responseOutput(response);
 		}
+		if (event.getSource() == changeGui) {
+            Gui.main(null);
+        }
 		if (event.getSource()== btnNewTrain)
 		{
 			String train = trainNameTextField.getText();
@@ -496,52 +492,24 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 		g.drawString(wagon,40+currentNumberOfWagons*TRAINLENGTH,105+currentTrain*OFFSET);
     }
 	
-	public void changeGui(ActionEvent event) {
-		if (event.getSource() == changeGui) {
-			initTrainGui();
-		}
-	}
-	
-	
-		
-		
-
-		
-		
-	
-	
-//0		new train tr1; 				// response is “train tr1 created”
-//1		new wagon wg1; 				// response is “wagon wg1 created with 20 seats”
-//	2	new wagon wg2 numseats 15; 	// response is “wagon wg2 created with 15 seats”
-//	  3	add wg1 to tr1; 			// response: “wagon wg1 added to train tr1”
-//4		getnumseats train tr1; 		// response: “number of seats in train tr1: 20”
-//5		getnumseats wagon wg2; 		// response: “number of seats in wagon wg2: 15”
-//6	 	delete train tr1; 			// response: “train tr1 deleted”
-//		delete train tr2; 			// response: “train tr2 does not exist”
-//7		delete wagon wg1; 			// response: “wagon wg1 deleted”
-//	  8	remove wg1 from tr1; 		// response: “wagon wg1 removed from train tr1”
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-	
-	
-	
-	
-	
 	public void responseOutput(String response) {
 		rightOutput.append(">> " + response + "\n");
 	}
 	
 	
+/*
+0		new train tr1; 				// response is “train tr1 created”
+1		new wagon wg1; 				// response is “wagon wg1 created with 20 seats”
+2	new wagon wg2 numseats 15; 	// response is “wagon wg2 created with 15 seats”
+3	add wg1 to tr1; 			// response: “wagon wg1 added to train tr1”
+4		getnumseats train tr1; 		// response: “number of seats in train tr1: 20”
+5		getnumseats wagon wg2; 		// response: “number of seats in wagon wg2: 15”
+6	 	delete train tr1; 			// response: “train tr1 deleted”		delete train tr2; 			// response: “train tr2 does not exist”
+7		delete wagon wg1; 			// response: “wagon wg1 deleted”
+8	remove wg1 from tr1; 		// response: “wagon wg1 removed from train tr1”
+*/	
+		
+
 	
 	
 
