@@ -65,8 +65,22 @@ public class TrainDaoImpl extends BaseDao implements TrainDao{
 
 	@Override
 	public Boolean delete(Train train) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		conn = BaseDao.getConnection();
+		String query = "DELETE FROM TRAINS WHERE ID = ?";
+
+		PreparedStatement statement = conn.prepareStatement(query);
+		statement.setInt(1, train.getID());
+		
+		int rowsDeleted = statement.executeUpdate();
+		if (rowsDeleted > 0) {
+			System.out.println("train deleted");
+			conn.close();
+			return true;
+		} else {
+			System.out.println("train not deleted");
+			conn.close();
+			return false;
+		}
 	}
 
 }

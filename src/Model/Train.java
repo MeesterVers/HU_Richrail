@@ -12,7 +12,7 @@ public class Train {
 		this.name = name;			
 	}
 	
-	public Train(int iD, String name) {
+	public Train(int ID, String name) {
 		this.ID = ID;
 		this.name = name;
 	}
@@ -44,6 +44,12 @@ public class Train {
 			numseatsTotal += w.getnumSeats();
 		}
 		return numseatsTotal;		
+	}
+	
+	
+
+	public int getID() {
+		return ID;
 	}
 
 	@Override

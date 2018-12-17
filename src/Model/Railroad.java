@@ -6,10 +6,11 @@ import java.util.List;
 import java.sql.SQLException;
 
 import Dao.TrainDaoImpl;
+import Dao.WagonDaoImpl;
 
 public class Railroad {
-	private ArrayList<Train> trains;
-	private ArrayList<Wagon> wagons;
+	private List<Train> trains;
+	private List<Wagon> wagons;
 	private Train selectedTrain = null;	
 	
 	public Railroad() {
@@ -19,31 +20,41 @@ public class Railroad {
 
 	public List<Train> getTrains() throws SQLException {
 		TrainDaoImpl trainService = new TrainDaoImpl();
+		trains = trainService.findAll();
 		return trainService.findAll();
 	}
 	
 	public void addTrain(Train train) throws SQLException {
 		TrainDaoImpl trainService = new TrainDaoImpl();
+		
 		if(trainService.save(train)) {
 			trains.add(train);
 		}
 	}
 	
-	public void removeTrain(String name) {
-		for(int i = 0; i < trains.size(); i++) {
-			Train train = trains.get(i);
-			if(train.getName().equals(name)) { 
-				trains.remove(i); 
+	public void deleteTrain(String name) throws SQLException {
+		TrainDaoImpl trainService = new TrainDaoImpl();
+	
+		for(Train t : trainService.findAll()) {
+			
+			if(t.getName().equals(name)) {
+				if(trainService.delete(t)) {
+					trains.remove(t);
+				}
 			}			
 		}	
 	}
 	
-	public ArrayList<Wagon> getWagons() {
+	public List<Wagon> getWagons() {
 		return wagons;
 	}
 	
-	public void addWagon(Wagon wagon) {
-		wagons.add(wagon);
+	public void addWagon(Wagon wagon) throws SQLException {
+		WagonDaoImpl wagonService = new WagonDaoImpl();
+		
+		if(wagonService.save(wagon)) {
+			wagons.add(wagon);
+		}
 	}
 	
 	

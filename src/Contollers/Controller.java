@@ -37,11 +37,12 @@ public class Controller {
 	/**
 	 * @param name : String
 	 * @return String for the response output
+	 * @throws SQLException 
 	 * 
 	 * @Description Creates a new wagon and adds the new wagon to 
 	 * an arrayList in the class railroad
 	 */
-	public String createWagon(String name) {
+	public String createWagon(String name) throws SQLException {
 		Wagon newWagon = new Wagon(name);
 
 		if(!wagonExists(newWagon)) {
@@ -57,12 +58,13 @@ public class Controller {
 	/**
 	 * @param name : String, numseats : int
 	 * @return String for the response output
+	 * @throws SQLException 
 	 * 
 	 * @Description Creates a new wagon with numseats
 	 * and adds the new wagon to an arrayList in the 
 	 * class railroad
 	 */
-	public String createWagon(String name, int numseats) {
+	public String createWagon(String name, int numseats) throws SQLException {
 		Wagon newWagon = new Wagon(name, numseats);
 
 		if(!wagonExists(newWagon)) {
@@ -135,7 +137,11 @@ public class Controller {
 	 */
 	public boolean wagonExists(Wagon w) {
 		for(Wagon wagon : railroad.getWagons()) {
-			if(wagon.getName().equals(w.getName())) return true;	
+			if(wagon.getName().equals(w.getName())) { 
+				return true; 
+				} else {
+					return false;
+				}	
 		}
 		return false;
 	}
@@ -201,9 +207,11 @@ public class Controller {
 	 */
 	public String deleteTrain(String name) throws SQLException {		
 		if(trainExists(new Train(name))) {
-			railroad.removeTrain(name);
+			railroad.deleteTrain(name);
 			return "Train " + name + " deleted";
-		} else return "Train " + name + " does not exist";		
+		} else { 
+			return "Train " + name + " does not exist"; 
+		}		
 	}
 	
 
