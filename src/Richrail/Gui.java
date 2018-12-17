@@ -13,9 +13,16 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.sql.*;
+import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+
+import Model.Railroad;
+import Contollers.Controller;
+import Dao.TrainDaoImpl;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -61,6 +68,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 	private int currentTrain = -1;
 	private int OFFSET = 100;
 	private int TRAINLENGTH = 100;
+
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -134,8 +142,8 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 				}
 				{
 					ComboBoxModel cbAllTrainsModel = 
-						new DefaultComboBoxModel(
-								new String[] { });
+					new DefaultComboBoxModel(
+						new String[] { });
 					trainDropDown = new JComboBox();
 
 					leftPanel.add(trainDropDown, new GridBagConstraints(1, 1, 1, 2, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
@@ -216,16 +224,30 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 		}
 	}
 	
-	public void actionPerformed(ActionEvent event)
-	{
-		if (event.getSource()== btnNewTrain)
-		{
+	public void actionPerformed(ActionEvent event) {
+		if (event.getSource()== btnNewTrain) {
 			String train = trainNameTextField.getText();
 			if (train != null && train.trim().length()>0)
 			{
-				train = addTrain(train);
-				currentTrain = trainDropDown.getSelectedIndex();
-				drawTrain(train);
+				
+				// save train
+				Railroad railroad = new Railroad();
+				Controller ControllerInst = new Controller(railroad);
+				try {
+					if(!train.equals("Train already exist")) {
+						if(ControllerInst.createTrainGui(train)) {
+							train = addTrain(train);
+							currentTrain = trainDropDown.getSelectedIndex();
+							drawTrain(train);
+							System.out.println(train);
+						}else {
+							trainNameTextField.setText("Train already exist");
+						}
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		else if (event.getSource() == btnChooseTrain)
@@ -329,7 +351,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 		{
 		}
 		return t;
-			
+
 	}
 	
 	public void drawTrain(String train) 
@@ -347,7 +369,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 			g.fillRoundRect(80, 120+currentTrain*OFFSET, 20, 20, 20, 20);
 			g.drawString(train,40,105+currentTrain*OFFSET);
 		}
-    }
+	}
 	
 	public void drawWagon(String wagon) 
 	{
@@ -358,5 +380,5 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 		g.fillRoundRect(35+currentNumberOfWagons*TRAINLENGTH, 120+currentTrain*OFFSET, 20, 20, 20, 20);
 		g.fillRoundRect(80+currentNumberOfWagons*TRAINLENGTH, 120+currentTrain*OFFSET, 20, 20, 20, 20);
 		g.drawString(wagon,40+currentNumberOfWagons*TRAINLENGTH,105+currentTrain*OFFSET);
-    }
+	}
 }

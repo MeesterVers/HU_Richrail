@@ -187,6 +187,19 @@ public class Controller {
 		}	
 	}
 	
+	public boolean createTrainGui(String name) throws SQLException {
+		Train newTrain = new Train(name);
+		if(!trainExists(newTrain)) {
+			railroad.setSelectedTrain(newTrain);
+			railroad.addTrain(newTrain);
+			
+			return true;
+			
+		} else { 
+			return false; 
+		}	
+	}
+	
 	public String getAllTrains() throws SQLException {
 		if (!railroad.getTrains().isEmpty()) {
 			return "All trains \n" + railroad.getTrains().toString() + railroad.getWagons().toString();

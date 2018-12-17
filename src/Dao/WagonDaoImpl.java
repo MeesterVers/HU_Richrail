@@ -1,7 +1,6 @@
 package Dao;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 import Model.Wagon;
@@ -25,11 +24,11 @@ public class WagonDaoImpl extends BaseDao implements WagonDao{
 	@Override
 	public Boolean save(Wagon wagon) throws SQLException {
 		conn = BaseDao.getConnection();
-		String query = "INSERT INTO trains (id, name, seats, train_id) VALUES (WAGONS_SEQ.nextval, ?, ?)";
+		String query = "INSERT INTO wagons (id, name, seats) VALUES (WAGONS_SEQ.nextval, ?, ?)";
 
 		PreparedStatement statement = conn.prepareStatement(query);
 		statement.setString(1, wagon.getName());
-		statement.setInt(2, wagon.getID());
+		statement.setInt(2, wagon.getnumSeats());
 
 		int rowsInserted = statement.executeUpdate();
 		if (rowsInserted > 0) {
