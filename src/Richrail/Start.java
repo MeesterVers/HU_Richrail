@@ -41,9 +41,9 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	private JTextArea rightOutput;
 	private JTextArea leftOutput;
 	
-	private JButton changeGui;
+	private JButton openGui;
 	
-	private CommandController cmdController;
+	private CommandController cmdController;	
 	private Railroad railroad;
 	
 	
@@ -51,7 +51,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	private int[]    heights = new int[]    { 7,   7,   7,   7   }; 
 	
 
-	private JPanel mainScreen;
+	private JPanel mainScreen;	
 	private JPanel innerMainScreen;
 	private JPanel rightPanel;
 	private JPanel leftPanel;
@@ -81,6 +81,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	private int currentTrain = -1;
 	private int OFFSET = 100;
 	private int TRAINLENGTH = 100;
+	private int wagonType;
 	
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -188,11 +189,11 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			RightPanel.add(rightOutput, new GridBagConstraints(0, 0, 4, 3, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 			
 			
-			// changeGui Button			
-			changeGui = new JButton();
-			RightPanel.add(changeGui, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-			changeGui.setText("ChangeGui");
-			changeGui.addActionListener(this);
+			// openGui Button			
+			openGui = new JButton();
+			RightPanel.add(openGui, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			openGui.setText("openGui");
+			openGui.addActionListener(this);
 			
 			pack();
 			setSize(1000, 800);
@@ -347,7 +348,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			}	
 			responseOutput(response);
 		}
-		if (event.getSource() == changeGui) {
+		if (event.getSource() == openGui) {
             Gui.main(null);
         }
 		if (event.getSource()== btnNewTrain)
@@ -401,33 +402,45 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 					selectedTrain.setText("selected: ");
 				}
 			}
-		}
-		else if (event.getSource() == btnAddWagon1)
+		}else if (event.getSource() == btnAddWagon1)
 		{
 			currentNumberOfWagons++;
 			drawWagon("Wagon1");
+			wagonType=1;
 		}
 		else if (event.getSource() == btnAddWagon2)
 		{
 			currentNumberOfWagons++;
 			drawWagon("Wagon2");
+			wagonType=2;
 		}
 		else if (event.getSource() == btnAddWagon3)
 		{
 			currentNumberOfWagons++;
 			drawWagon("Wagon3");
+			wagonType=3;
 		}
 		else if (event.getSource() == btnDeleteWagon1)
 		{
+			if(wagonType==1) {
+			currentNumberOfWagons--;
 			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);
+			}
 		}
 		else if (event.getSource() == btnDeleteWagon2)
 		{
-			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);		
+			if(wagonType==2) {
+			currentNumberOfWagons--;
+			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);
+			}
 		}
+			
 		else if (event.getSource() == btnDeleteWagon3)
 		{
+			if(wagonType==3) {
+			currentNumberOfWagons--;
 			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);		
+			}
 		}
 	}
 	

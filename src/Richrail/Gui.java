@@ -46,7 +46,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 	private JLabel trainNameLabel;
 	private JLabel selectedTrain;
 
-	
+		
 	private JButton btnDeleteWagon1;
 	private JButton btnDeleteWagon2;
 	private JButton btnDeleteWagon3;
@@ -68,6 +68,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 	private int currentTrain = -1;
 	private int OFFSET = 100;
 	private int TRAINLENGTH = 100;
+	private int wagonType;
 
 
 	/**
@@ -147,7 +148,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 					trainDropDown = new JComboBox();
 
 					leftPanel.add(trainDropDown, new GridBagConstraints(1, 1, 1, 2, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-					trainDropDown.setModel(cbAllTrainsModel);
+					trainDropDown.setModel(cbAllTrainsModel);		
 				}
 				{
 					btnChooseTrain = new JButton();
@@ -296,28 +297,41 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 		{
 			currentNumberOfWagons++;
 			drawWagon("Wagon1");
+			wagonType=1;
 		}
 		else if (event.getSource() == btnAddWagon2)
 		{
 			currentNumberOfWagons++;
 			drawWagon("Wagon2");
+			wagonType=2;
 		}
 		else if (event.getSource() == btnAddWagon3)
 		{
 			currentNumberOfWagons++;
 			drawWagon("Wagon3");
+			wagonType=3;
 		}
 		else if (event.getSource() == btnDeleteWagon1)
 		{
+			if(wagonType==1) {
+			currentNumberOfWagons--;
 			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);
+			}
 		}
 		else if (event.getSource() == btnDeleteWagon2)
 		{
-			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);		
+			if(wagonType==2) {
+			currentNumberOfWagons--;
+			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);	
+			}
 		}
+			
 		else if (event.getSource() == btnDeleteWagon3)
 		{
-			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);		
+			if(wagonType==3) {
+			currentNumberOfWagons--;
+			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);	
+			}
 		}
 	}
 	
