@@ -2,6 +2,7 @@ package Richrail;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -97,14 +98,14 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 		super();
 		this.railroad = new Railroad();
 		this.cmdController = new CommandController(railroad);
-		initGUI();			
+		initTrainGui();			
 	}
 	
 
 	
 	
 	// Create the GUI
-	private void initGUI() {
+	private void initCLIGUI() {
 		try {
 			this.setTitle("RichRail");
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);			
@@ -205,7 +206,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 		//Gui with trains
-	private void initSecondGui() {
+	private void initTrainGui() {
 		try 
 		{
 			JFrame frame = new JFrame("trains");
@@ -337,10 +338,10 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 
+
 	
-	
-	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(ActionEvent event)
+	{
 		if (event.getSource() == ExecuteButton) {
 			String command = CommandField.getText();
 			leftOutput.append("<< " + command + "\n");
@@ -353,11 +354,151 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			}	
 			responseOutput(response);
 		}
+		if (event.getSource()== btnNewTrain)
+		{
+			String train = trainNameTextField.getText();
+			if (train != null && train.trim().length()>0)
+			{
+				train = addTrain(train);
+				currentTrain = trainDropDown.getSelectedIndex();
+				drawTrain(train);
+			}
+		}
+		else if (event.getSource() == btnChooseTrain)
+		{
+			if (trainDropDown.getItemCount() > 0)
+			{
+				String selection = (String)trainDropDown.getSelectedItem();
+				selectedTrain.setText("selected: " + selection);
+				int ti = trainDropDown.getSelectedIndex();
+				if (ti != currentTrain)
+				{
+					numberOfWagons.put(currentTrain, currentNumberOfWagons);
+				}
+				currentTrain = ti;
+				try
+				{
+					currentNumberOfWagons = (Integer) numberOfWagons.get(currentTrain);
+				}
+				catch (Exception e)
+				{
+					currentNumberOfWagons = 0;
+				}			
+			}
+		}
+		else if (event.getSource() == btnDeleteTrain)
+		{
+			if (trainDropDown.getItemCount() > 0)
+			{
+				String t = (String)trainDropDown.getSelectedItem();
+				trainDropDown.removeItemAt(trainDropDown.getSelectedIndex());
+				numberOfWagons.remove(t);
+				repaint();
+				if ((String)trainDropDown.getSelectedItem() != null)
+				{
+					currentTrain = trainDropDown.getSelectedIndex();
+					selectedTrain.setText("selected: " + (String)trainDropDown.getSelectedItem());
+				}
+				else
+				{
+					currentTrain = 0;
+					selectedTrain.setText("selected: ");
+				}
+			}
+		}
+		else if (event.getSource() == btnAddWagon1)
+		{
+			currentNumberOfWagons++;
+			drawWagon("Wagon1");
+		}
+		else if (event.getSource() == btnAddWagon2)
+		{
+			currentNumberOfWagons++;
+			drawWagon("Wagon2");
+		}
+		else if (event.getSource() == btnAddWagon3)
+		{
+			currentNumberOfWagons++;
+			drawWagon("Wagon3");
+		}
+		else if (event.getSource() == btnDeleteWagon1)
+		{
+			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);
+		}
+		else if (event.getSource() == btnDeleteWagon2)
+		{
+			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);		
+		}
+		else if (event.getSource() == btnDeleteWagon3)
+		{
+			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);		
+		}
 	}
+	
+	public String addTrain(String train)
+	{
+		String t = "";
+		try
+		{
+			t = train.trim();
+			for (int i = 0; i < trainDropDown.getItemCount();i++ )
+			{
+				String cbTrain = (String)trainDropDown.getItemAt(i);
+				if (cbTrain.equalsIgnoreCase(t))
+				{
+					t = "";
+					break;
+				}
+			}
+			if (t != "")
+			{
+				if (currentTrain >= 0)
+				{
+					numberOfWagons.put(currentTrain,currentNumberOfWagons);
+				}
+				trainDropDown.addItem(t);
+				trainDropDown.setSelectedItem(t);
+				numberOfWagons.put(t, 0);
+			}
+		}
+		catch (Exception e)
+		{
+		}
+		return t;
+			
+	}
+	
+	public void drawTrain(String train) 
+	{
+		if (train != "")
+		{
+			Graphics g = innerMainScreen.getGraphics();
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillRect(30,80+currentTrain*OFFSET,80,40);
+			g.fillRect(80,60+currentTrain*OFFSET,30,30);
+			g.drawRoundRect(85, 40+currentTrain*OFFSET, 20, 20, 20, 20);
+			g.drawRoundRect(85, currentTrain*OFFSET, 40, 40, 40, 40);
+			g.setColor(Color.BLACK);
+			g.fillRoundRect(35, 120+currentTrain*OFFSET, 20, 20, 20, 20);
+			g.fillRoundRect(80, 120+currentTrain*OFFSET, 20, 20, 20, 20);
+			g.drawString(train,40,105+currentTrain*OFFSET);
+		}
+    }
+	
+	public void drawWagon(String wagon) 
+	{
+		Graphics g = innerMainScreen.getGraphics();
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(30+currentNumberOfWagons*TRAINLENGTH,80+currentTrain*OFFSET,80,40);
+		g.setColor(Color.BLACK);
+		g.fillRoundRect(35+currentNumberOfWagons*TRAINLENGTH, 120+currentTrain*OFFSET, 20, 20, 20, 20);
+		g.fillRoundRect(80+currentNumberOfWagons*TRAINLENGTH, 120+currentTrain*OFFSET, 20, 20, 20, 20);
+		g.drawString(wagon,40+currentNumberOfWagons*TRAINLENGTH,105+currentTrain*OFFSET);
+    }
 	
 	public void changeGui(ActionEvent event) {
 		if (event.getSource() == changeGui) {
-			initSecondGui();
+			initTrainGui();
 		}
 	}
 	
