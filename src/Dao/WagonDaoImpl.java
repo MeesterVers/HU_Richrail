@@ -35,9 +35,27 @@ public class WagonDaoImpl extends BaseDao implements WagonDao{
 	}
 
 	@Override
-	public List<Wagon> findWagon() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Wagon> findWagonByTrainID(int trainID) throws SQLException {
+		List<Wagon> wagons = new ArrayList<Wagon>();
+		conn = BaseDao.getConnection();
+		
+		String query = "SELECT * FROM wagons WHERE train_id = " + trainID;
+		Statement statement = conn.createStatement();
+		ResultSet result = statement.executeQuery(query);
+		
+		while (result.next()) {
+			int ID = result.getInt("id");
+			String name = result.getString("name");
+			int numseats = result.getInt("seats");
+			int train_id = result.getInt("train_id");
+
+			Wagon wagon = new Wagon(ID, name, numseats, train_id);
+			wagons.add(wagon);
+		}
+
+		conn.close();
+		result.close();
+		return wagons;
 	}
 
 	@Override

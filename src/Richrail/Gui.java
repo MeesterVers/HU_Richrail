@@ -3,13 +3,10 @@ package Richrail;
 
 
 import java.awt.BorderLayout;
-import java.util.HashMap;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,16 +14,27 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.*;
-import java.util.*;
+import java.util.HashMap;
 
+<<<<<<< HEAD
 import javax.imageio.ImageIO;
 import javax.swing.*;
+=======
+import javax.swing.BorderFactory;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+>>>>>>> c84f3c095760afa764cd3228a8ccf99a1d007c23
 import javax.swing.border.BevelBorder;
 
-import Model.Railroad;
 import Contollers.Controller;
-import Dao.TrainDaoImpl;
+import Model.Railroad;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo

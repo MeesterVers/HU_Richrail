@@ -11,8 +11,4 @@ public class BaseDao {
 	protected static Connection getConnection() throws SQLException{
 		return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 	}
-
-	public void closeConnection(){
-		// close connection volgende opdracht
-	}
 } 

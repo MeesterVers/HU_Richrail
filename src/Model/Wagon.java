@@ -28,6 +28,10 @@ public class Wagon {
 		this.numseats = numseats;
 		this.train_id = train_id;
 	}
+	
+	public int getID() {
+		return ID;
+	}
 
 	public String getName() {
 		return this.name;		
@@ -38,13 +42,8 @@ public class Wagon {
 	}
 	
 
-	public int getID() {
-		return ID;
-	}
-
-	@Override
 	public String toString() {
-		return "Wagon name=" + name + ", number of seats=" + numseats;
+		return "Wagon name = " + name + ", number of seats = " + numseats + "\n";
 	}
 	
 }

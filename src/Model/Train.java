@@ -1,13 +1,12 @@
 package Model;
-
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class Train {
 	private int ID;
 	private String name;
-	
-	private ArrayList<Wagon> wagons = new ArrayList<Wagon>();
+	private List<Wagon> wagons;
+
 	public Train(String name) {	
 		this.name = name;			
 	}
@@ -15,14 +14,11 @@ public class Train {
 	public Train(int ID, String name) {
 		this.ID = ID;
 		this.name = name;
+    	this.wagons = new ArrayList<Wagon>();
 	}
 
-	public void addWagon(Wagon wagon) {
-		this.wagons.add(wagon);		
-	}
-
-	public void clearWagons() {
-		wagons.clear(); 	 		
+	public int getID() {
+		return ID;
 	}	
 	
 	public String getName() {
@@ -31,32 +27,26 @@ public class Train {
 	
 	
 
-	public ArrayList<Wagon> getWagons() {
-		return this.wagons; 		
-	}
-
 	public boolean hasName() {
 		return (this.name != "");	
 	}
-	
-	public int getNumSeats() {
-		int numseatsTotal = 0;
-		
-		for(Wagon w : wagons) {
-			numseatsTotal += w.getnumSeats();
-		}
-		return numseatsTotal;		
-	}
-	
-	
 
-	public int getID() {
-		return ID;
+	// wagons methods
+	public void setWagons(List<Wagon> wagons) {
+		this.wagons = wagons;	
 	}
 
-	@Override
+	public List<Wagon> getWagons() {
+		return this.wagons; 		
+	}
+	
 	public String toString() {
-		return "Train name: " + name;
+		if(getWagons().isEmpty()) {
+			return "Train name: " + name + " No wagons \n";
+		}else {
+			return "Train name: " + name + " Wagons: " + getWagons() + "\n";
+		}
+		
 	}
 	
 	
