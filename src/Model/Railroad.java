@@ -20,7 +20,6 @@ public class Railroad {
 
 	public List<Train> getTrains() throws SQLException {
 		TrainDaoImpl trainService = new TrainDaoImpl();
-		trains = trainService.findAll();
 		return trainService.findAll();
 	}
 	

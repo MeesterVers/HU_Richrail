@@ -1,21 +1,11 @@
-/**
- * TODO
- * - Add method remove [WAGON] from [TRAIN]
- * - Add Method add [WAGON] to [TRAIN]
- * - Add Method getnumseats train [TRAIN]
- * - Add Method getnumseats wagon [WAGON]
- * - Add Method new wagon [WAGON] numseats [NUMSEATS]
- */
-
-
 package Contollers;
-
-import Model.Railroad;
 
 import java.sql.SQLException;
 
 import Dao.TrainDaoImpl;
+import Dao.WagonDaoImpl;
 
+import Model.Railroad;
 import Model.Train;
 import Model.Wagon;
 
@@ -142,9 +132,9 @@ public class Controller {
 		for(Wagon wagon : railroad.getWagons()) {
 			if(wagon.getName().equals(w.getName())) { 
 				return true; 
-				} else {
-					return false;
-				}	
+			} else {
+				return false;
+			}	
 		}
 		return false;
 	}
@@ -179,34 +169,34 @@ public class Controller {
 	 * an arrayList in the class railroad
 	 */
 	public String createTrain(String name) throws SQLException {
-		Train newTrain = new Train(name);
-		if(!trainExists(newTrain)) {
-			railroad.setSelectedTrain(newTrain);
-			railroad.addTrain(newTrain);
-			
+		TrainDaoImpl trainService = new TrainDaoImpl();
+
+		if(!trainExists(name)) {
+			trainService.save(name);
 			return "Train " + name + " created";
-			
 		} else { 
 			return "Train " + name + " already exists"; 
 		}	
 	}
 	
-	public boolean createTrainGui(String name) throws SQLException {
-		Train newTrain = new Train(name);
-		if(!trainExists(newTrain)) {
-			railroad.setSelectedTrain(newTrain);
-			railroad.addTrain(newTrain);
+	// public boolean createTrainGui(String name) throws SQLException {
+	// 	Train newTrain = new Train(name);
+	// 	if(!trainExists(newTrain)) {
+	// 		railroad.setSelectedTrain(newTrain);
+	// 		railroad.addTrain(newTrain);
 			
-			return true;
+	// 		return true;
 			
-		} else { 
-			return false; 
-		}	
-	}
+	// 	} else { 
+	// 		return false; 
+	// 	}	
+	// }
 	
 	public String getAllTrains() throws SQLException {
-		if (!railroad.getTrains().isEmpty()) {
-			return "All trains \n" + railroad.getTrains().toString() + railroad.getWagons().toString();
+		TrainDaoImpl trainService = new TrainDaoImpl();
+		
+		if (!trainService.findAll().isEmpty()) {
+			return "All trains \n" + trainService.findAll();
 		}else {
 			return "No trains";
 		}
@@ -222,9 +212,11 @@ public class Controller {
 	 * @Description Deletes the train with the given
 	 * name, if exists
 	 */
-	public String deleteTrain(String name) throws SQLException {		
-		if(trainExists(new Train(name))) {
-			railroad.deleteTrain(name);
+	public String deleteTrain(String name) throws SQLException {
+	TrainDaoImpl trainService = new TrainDaoImpl();
+
+		if(trainExists(name)) {
+			trainService.deleteTrain(name);
 			return "Train " + name + " deleted";
 		} else { 
 			return "Train " + name + " does not exist"; 
@@ -253,17 +245,24 @@ public class Controller {
 	
 	
 	/**	
-	 * @param t : Train
+	 * @param name : Train
 	 * @return boolean if train exists
 	 * @throws SQLException 
 	 * 
-	 * @Description Checks if the given train exists in the 
-	 * array from the class railroad
-	 */
-	public boolean trainExists(Train t) throws SQLException {
-		for(Train train : railroad.getTrains()) {
-			if(train.getName().equals(t.getName())) return true;	
+	 * @Description Checks if the given train exists in the DB
+	*/
+	
+	public boolean trainExists(String name) throws SQLException {
+		TrainDaoImpl trainService = new TrainDaoImpl();
+		
+		for(Train train : trainService.findAll()) {
+			if(train.getName().equals(name)){
+				return true;
+			}else {
+				return false;
+			}	
 		}
 		return false;
 	}
+	
 }
