@@ -28,6 +28,8 @@ public class Train {
 	public String getName() {
 		return this.name;			
 	}
+	
+	
 
 	public ArrayList<Wagon> getWagons() {
 		return this.wagons; 		

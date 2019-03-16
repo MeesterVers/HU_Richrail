@@ -13,10 +13,14 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.*;
 import java.util.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
@@ -39,14 +43,15 @@ import Dao.TrainDaoImpl;
 public class Gui extends javax.swing.JFrame implements ActionListener 
 {
 	private JPanel mainScreen;
-	private JPanel innerMainScreen;
+	private static JPanel innerMainScreen;
 	private JPanel rightPanel;
 	private JPanel leftPanel;
 
 	private JLabel trainNameLabel;
 	private JLabel selectedTrain;
 
-		
+	public static BufferedImage image;
+	
 	private JButton btnDeleteWagon1;
 	private JButton btnDeleteWagon2;
 	private JButton btnDeleteWagon3;
@@ -59,12 +64,12 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 	private JButton btnChooseTrain;
 	private JButton btnNewTrain;
 	
-	private JComboBox trainDropDown;
+	private JComboBox<String> trainDropDown;
 
-	private JTextField trainNameTextField;
-	private HashMap numberOfWagons;
+	static JTextField trainNameTextField;
+	private HashMap<Comparable, Integer> numberOfWagons;
 	
-	private int currentNumberOfWagons;
+	private int currentNumberOfWagons = 205;
 	private int currentTrain = -1;
 	private int OFFSET = 100;
 	private int TRAINLENGTH = 100;
@@ -142,10 +147,10 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 					btnNewTrain.addActionListener(this);
 				}
 				{
-					ComboBoxModel cbAllTrainsModel = 
-					new DefaultComboBoxModel(
+					ComboBoxModel<String> cbAllTrainsModel = 
+					new DefaultComboBoxModel<String>(
 						new String[] { });
-					trainDropDown = new JComboBox();
+					trainDropDown = new JComboBox<String>();
 
 					leftPanel.add(trainDropDown, new GridBagConstraints(1, 1, 1, 2, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 					trainDropDown.setModel(cbAllTrainsModel);		
@@ -217,8 +222,8 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 				}
 			}
 			pack();
-			setSize(800, 600);
-			numberOfWagons = new HashMap();
+			setSize(1000, 600);
+			numberOfWagons = new HashMap<Comparable, Integer>();
 		} catch (Exception e) 
 		{
 			e.printStackTrace();
@@ -228,6 +233,12 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource()== btnNewTrain) {
 			String train = trainNameTextField.getText();
+//			try {
+//				Start.cmdController.executeCommand("new train " + train);
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			if (train != null && train.trim().length()>0)
 			{
 				
@@ -248,11 +259,15 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
 		else if (event.getSource() == btnChooseTrain)
 		{
+			
 			if (trainDropDown.getItemCount() > 0)
 			{
 				String selection = (String)trainDropDown.getSelectedItem();
@@ -296,42 +311,79 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 		else if (event.getSource() == btnAddWagon1)
 		{
 			currentNumberOfWagons++;
-			drawWagon("Wagon1");
+			try {
+				drawWagon(205,0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			wagonType=1;
+			try {
+				Start.cmdController.executeCommand("new wagon wg1");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else if (event.getSource() == btnAddWagon2)
 		{
 			currentNumberOfWagons++;
-			drawWagon("Wagon2");
+			try {
+				drawWagon(410,0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			wagonType=2;
+			try {
+				Start.cmdController.executeCommand("new wagon wg");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else if (event.getSource() == btnAddWagon3)
 		{
 			currentNumberOfWagons++;
-			drawWagon("Wagon3");
+			try {
+				drawWagon(615,0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			wagonType=3;
+			try {
+				Start.cmdController.executeCommand("new wagon wg3");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		else if (event.getSource() == btnDeleteWagon1)
 		{
 			if(wagonType==1) {
 			currentNumberOfWagons--;
-			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);
+			repaint(225,0, OFFSET, OFFSET);	
 			}
 		}
 		else if (event.getSource() == btnDeleteWagon2)
 		{
-			if(wagonType==2) {
+			if(wagonType==2)  {
 			currentNumberOfWagons--;
-			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);	
+			repaint(425,0, OFFSET, OFFSET);	
+			wagonType= 1;
 			}
+			
 		}
 			
 		else if (event.getSource() == btnDeleteWagon3)
 		{
 			if(wagonType==3) {
 			currentNumberOfWagons--;
-			repaint(30+TRAINLENGTH,80+currentTrain*OFFSET,1,1);	
+			repaint(635,0, OFFSET, OFFSET);	
+			wagonType= 2;
 			}
+		
 		}
 	}
 	
@@ -368,31 +420,21 @@ public class Gui extends javax.swing.JFrame implements ActionListener
 
 	}
 	
-	public void drawTrain(String train) 
-	{
-		if (train != "")
-		{
-			Graphics g = innerMainScreen.getGraphics();
-			g.setColor(Color.LIGHT_GRAY);
-			g.fillRect(30,80+currentTrain*OFFSET,80,40);
-			g.fillRect(80,60+currentTrain*OFFSET,30,30);
-			g.drawRoundRect(85, 40+currentTrain*OFFSET, 20, 20, 20, 20);
-			g.drawRoundRect(85, currentTrain*OFFSET, 40, 40, 40, 40);
-			g.setColor(Color.BLACK);
-			g.fillRoundRect(35, 120+currentTrain*OFFSET, 20, 20, 20, 20);
-			g.fillRoundRect(80, 120+currentTrain*OFFSET, 20, 20, 20, 20);
-			g.drawString(train,40,105+currentTrain*OFFSET);
+	public static void drawTrain(String train) throws IOException {
+		
+		Graphics g = innerMainScreen.getGraphics();
+		if (train != "") {
+			image = ImageIO.read(new File("src/train.jpg"));
+			g.drawImage(image, 0, 0, null);
 		}
+		Start.leftOutput.append("<< new train " + train + "\n");
+		Start.rightOutput.append(">> train " + train + " created" + "\n");
 	}
 	
-	public void drawWagon(String wagon) 
+	public void drawWagon(int width, int hight) throws IOException 
 	{
 		Graphics g = innerMainScreen.getGraphics();
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(30+currentNumberOfWagons*TRAINLENGTH,80+currentTrain*OFFSET,80,40);
-		g.setColor(Color.BLACK);
-		g.fillRoundRect(35+currentNumberOfWagons*TRAINLENGTH, 120+currentTrain*OFFSET, 20, 20, 20, 20);
-		g.fillRoundRect(80+currentNumberOfWagons*TRAINLENGTH, 120+currentTrain*OFFSET, 20, 20, 20, 20);
-		g.drawString(wagon,40+currentNumberOfWagons*TRAINLENGTH,105+currentTrain*OFFSET);
+		image = ImageIO.read(new File("src/Wagon.png"));
+		g.drawImage(image, width, hight, null);
 	}
 }
