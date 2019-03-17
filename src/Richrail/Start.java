@@ -36,7 +36,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 	private JButton openGui;
 
-	public static CommandController cmdController;
+	public CommandController cmdController;
 	private Railroad railroad;
 
 	private double[] weights = new double[] { 0.1, 0.1, 0.1, 0.1 };
@@ -56,7 +56,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	public Start() {
 		super();
 		this.railroad = new Railroad();
-		Start.cmdController = new CommandController(railroad);
+		this.cmdController = new CommandController(railroad);
 		initCLIGUI();
 	}
 
@@ -183,13 +183,15 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			if (test.equals("T")) {
 				Gui.trainNameTextField.setText(trainname);
 
-				try {
+		
 
-					Gui.drawTrain(trainname);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					try {
+						Gui.drawTrain(trainname);
+					} catch (IOException | SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			
 			}
 		
 			String wagonname1 = null;

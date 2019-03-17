@@ -23,6 +23,7 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
 import Model.Railroad;
+import Contollers.CommandController;
 import Contollers.Controller;
 import Dao.TrainDaoImpl;
 
@@ -58,6 +59,8 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	private JButton btnDeleteTrain;
 	private JButton btnChooseTrain;
 	private JButton btnNewTrain;
+	
+	public CommandController cmdController;
 
 	private JComboBox<String> trainDropDown;
 
@@ -75,6 +78,8 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	private JTextField WagonnameTextfield2;
 	private JTextField WagonnameTextfield3;
 
+	private Railroad railroad;
+	
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
@@ -84,6 +89,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 				Gui inst = new Gui();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
+				
 			}
 		});
 	}
@@ -91,6 +97,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	public Gui() {
 		super();
 		initGUI();
+		this.cmdController = new CommandController(railroad);
 	}
 
 	private void initGUI() {
@@ -275,36 +282,55 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == btnNewTrain) {
 			String train = trainNameTextField.getText();
-			// try {
-			// Start.cmdController.executeCommand("new train " + train);
-			// } catch (SQLException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			if (train != null && train.trim().length() > 0) {
-
-				// save train
-				Railroad railroad = new Railroad();
-				Controller ControllerInst = new Controller(railroad);
-				try {
-					if (!train.equals("Train already exist")) {
-						if (ControllerInst.createTrain(train) != null) {
-							train = addTrain(train);
-							currentTrain = trainDropDown.getSelectedIndex();
-							drawTrain(train);
-							System.out.println(train);
-						} else {
-							trainNameTextField.setText("Train already exist");
-						}
-					}
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			 try {
+			 String response = cmdController.executeCommand("new train " + train);
+			 String check = response.substring(response.indexOf(" ")+ 11);
+			 if (check.equals("exists")) {
+				 trainNameTextField.setText("Train already exist");
+			 }
+			 else {
+				 try {
+					drawTrain(train);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
+			 }
+			 System.out.println(response);
+			 } catch (SQLException e) {
+			 // TODO Auto-generated catch block
+			 e.printStackTrace();
+			 }
+			 
+//			if (train != null && train.trim().length() > 0) {
+//
+//				// save train
+//				Railroad railroad = new Railroad();
+//				Controller ControllerInst = new Controller(railroad);
+//				TrainDaoImpl newtrain = new TrainDaoImpl();
+//				try {
+//					if (!train.equals("Train already exist")) {
+//						if (ControllerInst.createTrain(train) != null) {
+////							ControllerInst.createTrain(train);
+//							train = addTrain(train);
+//							currentTrain = trainDropDown.getSelectedIndex();
+////							newtrain.save(train);
+//							drawTrain(train);
+//							System.out.println(train);	
+//							Start.leftOutput.append("<< new train " + train + "\n");
+//							Start.rightOutput.append(">> train " + train + " created" + "\n");
+//						} else {
+//							trainNameTextField.setText("Train already exist");
+//						}
+//					}
+//				} catch (SQLException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
 		} else if (event.getSource() == btnChooseTrain) {
 
 			if (trainDropDown.getItemCount() > 0) {
@@ -346,7 +372,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 			}
 			wagonType = 1;
 			try {
-				Start.cmdController.executeCommand("new wagon " + wagon1);
+				cmdController.executeCommand("new wagon " + wagon1);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -362,7 +388,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 			}
 			wagonType = 2;
 			try {
-				Start.cmdController.executeCommand("new wagon " + wagon2);
+				cmdController.executeCommand("new wagon " + wagon2);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -378,7 +404,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 			}
 			wagonType = 3;
 			try {
-				Start.cmdController.executeCommand("new wagon wg3 " + wagon3);
+				cmdController.executeCommand("new wagon " + wagon3);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -432,15 +458,15 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 
 	}
 
-	public static void drawTrain(String train) throws IOException {
+	public static void drawTrain(String train) throws IOException, SQLException {
 
 		Graphics g = innerMainScreen.getGraphics();
 		if (train != "") {
 			image = ImageIO.read(new File("src/train.jpg"));
 			g.drawImage(image, 0, 0, null);
+		
 		}
-		Start.leftOutput.append("<< new train " + train + "\n");
-		Start.rightOutput.append(">> train " + train + " created" + "\n");
+
 	}
 
 	public static void drawWagon(int width, int hight) throws IOException {
