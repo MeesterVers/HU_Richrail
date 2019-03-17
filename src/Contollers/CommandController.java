@@ -8,7 +8,9 @@ import java.util.regex.Pattern;
 public class CommandController {	
 	private Controller ControllerInst;
 	
-	
+	public CommandController() {		
+		ControllerInst = new Controller();
+	}
 	
 	/**
 	 * @param command : String 

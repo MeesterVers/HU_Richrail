@@ -23,7 +23,6 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
 import Contollers.CommandController;
-import Contollers.Controller;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
