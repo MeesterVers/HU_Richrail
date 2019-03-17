@@ -2,27 +2,15 @@ package Richrail;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-
-
-
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -33,7 +21,6 @@ import javax.swing.border.BevelBorder;
 
 import Contollers.CommandController;
 import Model.Railroad;
-import Model.Train;
 
 @SuppressWarnings("serial")
 public class Start extends javax.swing.JFrame implements ActionListener {
@@ -49,42 +36,11 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 	private JButton openGui;
 
-	static CommandController cmdController;
+	public static CommandController cmdController;
 	private Railroad railroad;
 
 	private double[] weights = new double[] { 0.1, 0.1, 0.1, 0.1 };
 	private int[] heights = new int[] { 7, 7, 7, 7 };
-
-	private JPanel mainScreen;
-	private JPanel innerMainScreen;
-	private JPanel rightPanel;
-	private JPanel leftPanel;
-
-	private JLabel trainNameLabel;
-	private JLabel selectedTrain;
-
-	private JButton btnDeleteWagon1;
-	private JButton btnDeleteWagon2;
-	private JButton btnDeleteWagon3;
-
-	private JButton btnAddWagon1;
-	private JButton btnAddWagon2;
-	private JButton btnAddWagon3;
-
-	private JButton btnDeleteTrain;
-	private JButton btnChooseTrain;
-	private JButton btnNewTrain;
-
-	private JComboBox trainDropDown;
-
-	private JTextField trainNameTextField;
-	private HashMap numberOfWagons;
-
-	private int currentNumberOfWagons;
-	private int currentTrain = -1;
-	private int OFFSET = 100;
-	private int TRAINLENGTH = 100;
-	private int wagonType;
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -92,6 +48,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 				Start richrail = new Start();
 				richrail.setLocationRelativeTo(null);
 				richrail.setVisible(true);
+				Gui.main(null);
 			}
 		});
 	}
@@ -99,7 +56,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	public Start() {
 		super();
 		this.railroad = new Railroad();
-		this.cmdController = new CommandController(railroad);
+		Start.cmdController = new CommandController(railroad);
 		initCLIGUI();
 	}
 
@@ -132,8 +89,8 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 			// Left Panel
 			LeftPanel = new JPanel();
-			LeftPanel.setBounds(10, 10, 100, 15);
-			LeftPanel.setLayout(gridBagLayout1);
+			LeftPanel.setBounds(100, 10, 100, 15);
+			LeftPanel.setLayout(gridBagLayout);
 			getContentPane().add(LeftPanel, new GridBagConstraints(0, 2, 1, 2, 0.0, 0.0, GridBagConstraints.CENTER,
 					GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 			LeftPanel.setBorder(BorderFactory.createEtchedBorder(BevelBorder.LOWERED));
@@ -189,11 +146,12 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 					GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 			// openGui Button
-			openGui = new JButton();
-			RightPanel.add(openGui, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-					GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-			openGui.setText("openGui");
-			openGui.addActionListener(this);
+			// openGui = new JButton();
+			// RightPanel.add(openGui, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0,
+			// GridBagConstraints.CENTER,
+			// GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			// openGui.setText("openGui");
+			// openGui.addActionListener(this);
 
 			pack();
 			setSize(1000, 800);
@@ -206,28 +164,50 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 		if (event.getSource() == ExecuteButton) {
 			String command = CommandField.getText();
 			leftOutput.append("<< " + command + "\n");
+
 			String response = null;
 			try {
 				response = cmdController.executeCommand(command);
-			} catch (SQLException e) {
+			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
+
 			responseOutput(response);
-		
-			Gui.trainNameTextField.setText(response);
-			try {
-				Gui.drawTrain(response);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+			String test = response.substring(0,1);
+			String afkorting = command.substring(4, 5);
+			String trainname = command.substring(command.indexOf(" ") + 1);
 			
+			System.out.println(test);
+			if (test.equals("T")) {
+				Gui.trainNameTextField.setText(trainname);
+
+				try {
+
+					Gui.drawTrain(trainname);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+			String wagonname1 = null;
+			if (test.equals("W")) {
+				wagonname1 = command.substring(command.indexOf(" ") + 1);
+				Gui.WagonnameTextfield1.setText(wagonname1);
+				try {
+					Gui.drawWagon(205, 0);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		Gui.main(null);
 	}
 
-	
+	// Gui.trainNameTextField.setText(trainname);
+	// Gui.main(null);
 
 	public void responseOutput(String response) {
 		rightOutput.append(">> " + response + "\n");
