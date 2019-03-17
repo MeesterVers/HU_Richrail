@@ -12,4 +12,5 @@ public interface WagonDao {
 	public Boolean update(String wagonName) throws SQLException;
 	public Boolean delete(String wagonName) throws SQLException;
 	public Boolean addWagonToTrain(int trainID, String wagonName) throws SQLException;
+	public Boolean removeWagon(String wagonName) throws SQLException;
 }

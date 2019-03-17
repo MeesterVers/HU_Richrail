@@ -25,12 +25,6 @@ public class Train {
 		return this.name;			
 	}
 	
-	
-
-	public boolean hasName() {
-		return (this.name != "");	
-	}
-
 	// wagons methods
 	public void setWagons(List<Wagon> wagons) {
 		this.wagons = wagons;	

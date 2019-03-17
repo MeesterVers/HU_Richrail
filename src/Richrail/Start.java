@@ -20,7 +20,6 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
 import Contollers.CommandController;
-import Model.Railroad;
 
 @SuppressWarnings("serial")
 public class Start extends javax.swing.JFrame implements ActionListener {
@@ -37,7 +36,6 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	private JButton openGui;
 
 	public CommandController cmdController;
-	private Railroad railroad;
 
 	private double[] weights = new double[] { 0.1, 0.1, 0.1, 0.1 };
 	private int[] heights = new int[] { 7, 7, 7, 7 };
@@ -55,8 +53,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 	public Start() {
 		super();
-		this.railroad = new Railroad();
-		this.cmdController = new CommandController(railroad);
+		this.cmdController = new CommandController();
 		initCLIGUI();
 	}
 

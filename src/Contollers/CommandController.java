@@ -5,21 +5,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import Model.Railroad;
-
 public class CommandController {	
 	private Controller ControllerInst;
-	
-	
-	
-	/**
-	 * @param railroad : Railroad
-	 * 
-	 * @Description Constructor
-	 */
-	public CommandController(Railroad railroad) {		
-		ControllerInst = new Controller(railroad);
-	}
 	
 	
 	

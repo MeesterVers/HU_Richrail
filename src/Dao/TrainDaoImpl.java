@@ -56,12 +56,14 @@ public class TrainDaoImpl implements TrainDao{
 
 	public Train findTrainByName(String trainName) throws SQLException {
 		conn = BaseDao.getConnection();
-		WagonDaoImpl wagonDaoImpl = new WagonDaoImpl();
+		WagonDao wagonDaoImpl = new WagonDaoImpl();
 		Train foundTrain = null;
 		
-		String query = "SELECT * FROM trains WHERE name = ?" + trainName;
-		Statement statement = conn.createStatement();
-		ResultSet result = statement.executeQuery(query);
+		String query = "SELECT * FROM TRAINS WHERE name = ?";
+		
+		PreparedStatement statement = conn.prepareStatement(query);
+		statement.setString(1, trainName);
+		ResultSet result = statement.executeQuery();
 		
 		while (result.next()) {
 			int ID = result.getInt("id");

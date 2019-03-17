@@ -22,10 +22,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
-import Model.Railroad;
 import Contollers.CommandController;
 import Contollers.Controller;
-import Dao.TrainDaoImpl;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -77,8 +75,6 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	static JTextField WagonnameTextfield1;
 	private JTextField WagonnameTextfield2;
 	private JTextField WagonnameTextfield3;
-
-	private Railroad railroad;
 	
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -97,7 +93,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	public Gui() {
 		super();
 		initGUI();
-		this.cmdController = new CommandController(railroad);
+		this.cmdController = new CommandController();
 	}
 
 	private void initGUI() {
