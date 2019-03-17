@@ -45,18 +45,14 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 
 	public static BufferedImage image;
 
-	private JButton btnDeleteWagon1;
-	private JButton btnDeleteWagon2;
-	private JButton btnDeleteWagon3;
+	private JButton btnDeleteWagon;
 
-	private JButton btnAddWagon1;
-	private JButton btnAddWagon2;
-	private JButton btnAddWagon3;
+	private JButton btnAddWagon;
 
 	private JButton btnDeleteTrain;
 	private JButton btnChooseTrain;
-	private JButton btnNewTrain;
-	
+	public JButton btnNewTrain;
+
 	public CommandController cmdController;
 
 	private JComboBox<String> trainDropDown;
@@ -64,17 +60,15 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	static JTextField trainNameTextField;
 	private HashMap<Comparable, Integer> numberOfWagons;
 
-	private int currentNumberOfWagons = 205;
+	private int currentNumberOfWagons = 210;
 	private int currentTrain = -1;
 	private int OFFSET = 100;
-	private int TRAINLENGTH = 100;
-	private int wagonType;
-	private JTextField WagonnameTextfield;
+	private int wagonlocation = 205;
 	private JLabel Wagonname;
+	private JLabel Wagonseats;
 	static JTextField WagonnameTextfield1;
-	private JTextField WagonnameTextfield2;
-	private JTextField WagonnameTextfield3;
-	
+	static JTextField SeatsTextfield1;
+
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
@@ -84,7 +78,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 				Gui inst = new Gui();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
-				
+
 			}
 		});
 	}
@@ -154,6 +148,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 							GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 					trainDropDown.setModel(cbAllTrainsModel);
 				}
+				
 				{
 					btnChooseTrain = new JButton();
 					leftPanel.add(btnChooseTrain, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
@@ -172,7 +167,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 			{
 				rightPanel = new JPanel();
 				GridBagLayout rightPanelLayout = new GridBagLayout();
-				getContentPane().add(rightPanel, new GridBagConstraints(1, 2, 2, 3, 0.0, 0.0, GridBagConstraints.CENTER,
+				getContentPane().add(rightPanel, new GridBagConstraints(3, 2, 2, 3, 0.0, 0.0, GridBagConstraints.CENTER,
 						GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 				rightPanelLayout.rowWeights = new double[] { 0.1, 0.1, 0.1, 0.1 };
 				rightPanelLayout.rowHeights = new int[] { 7, 7, 7, 7 };
@@ -200,71 +195,32 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				}
 				{
-					btnAddWagon1 = new JButton();
-					rightPanel.add(btnAddWagon1, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+					btnAddWagon = new JButton();
+					rightPanel.add(btnAddWagon, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
 							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					btnAddWagon1.setText("add wagon 1");
-					btnAddWagon1.addActionListener(this);
+					btnAddWagon.setText("add wagon");
+					btnAddWagon.addActionListener(this);
 				}
 				{
-					Wagonname = new JLabel();
+					btnDeleteWagon = new JButton();
+					rightPanel.add(btnDeleteWagon, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
+							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+					btnDeleteWagon.setText("delete wagon");
+					btnDeleteWagon.addActionListener(this);
+				}
+				{
+					Wagonseats = new JLabel();
 
-					rightPanel.add(Wagonname, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+					rightPanel.add(Wagonseats, new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0, GridBagConstraints.WEST,
 							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					Wagonname.setText("Wagon name: ");
+					Wagonseats.setText("seats: ");
 				}
 				{
-					WagonnameTextfield2 = new JTextField(10);
-					rightPanel.add(WagonnameTextfield2, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
-							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+					SeatsTextfield1 = new JTextField(10);
+					rightPanel.add(SeatsTextfield1, new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0,
+							GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				}
-				{
-					btnAddWagon2 = new JButton();
-					rightPanel.add(btnAddWagon2, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					btnAddWagon2.setText("add wagon 2");
-					btnAddWagon2.addActionListener(this);
-				}
-				{
-					Wagonname = new JLabel();
 
-					rightPanel.add(Wagonname, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
-							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					Wagonname.setText("Wagon name: ");
-				}
-				{
-					WagonnameTextfield3 = new JTextField(10);
-					rightPanel.add(WagonnameTextfield3, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
-							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-				}
-				{
-					btnAddWagon3 = new JButton();
-					rightPanel.add(btnAddWagon3, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					btnAddWagon3.setText("add wagon 3");
-					btnAddWagon3.addActionListener(this);
-				}
-				{
-					btnDeleteWagon1 = new JButton();
-					rightPanel.add(btnDeleteWagon1, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0,
-							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					btnDeleteWagon1.setText("delete wagon 1");
-					btnDeleteWagon1.addActionListener(this);
-				}
-				{
-					btnDeleteWagon2 = new JButton();
-					rightPanel.add(btnDeleteWagon2, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0,
-							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					btnDeleteWagon2.setText("delete wagon 2");
-					btnDeleteWagon2.addActionListener(this);
-				}
-				{
-					btnDeleteWagon3 = new JButton();
-					rightPanel.add(btnDeleteWagon3, new GridBagConstraints(4, 2, 1, 1, 0.0, 0.0,
-							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					btnDeleteWagon3.setText("delete wagon 3");
-					btnDeleteWagon3.addActionListener(this);
-				}
 			}
 			pack();
 			setSize(1000, 600);
@@ -274,158 +230,133 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 
+	public String Gettrains(String trains) {
+		String command = "get all trains";
+		try {
+			trains = cmdController.executeCommand(command);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		trainDropDown.addItem(trains);
+		System.out.println(trains);
+		return trains;
+	}
+
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == btnNewTrain) {
-			String train = trainNameTextField.getText();
-			 try {
-			 String response = cmdController.executeCommand("new train " + train);
-			 String check = response.substring(response.indexOf(" ")+ 11);
-			 if (check.equals("exists")) {
-				 trainNameTextField.setText("Train already exist");
-			 }
-			 else {
-				 try {
+			AddTrain();
+		} else if (event.getSource() == btnChooseTrain) {
+			btnChooseTrain();
+		} else if (event.getSource() == btnDeleteTrain) {
+			DeleteTrain();
+		} else if (event.getSource() == btnAddWagon) {
+			try {
+				AddWagon();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else if (event.getSource() == btnDeleteWagon) {
+			DeleteWagon();
+		}
+	}
+
+	public void AddTrain() {
+		String train = trainNameTextField.getText();
+		try {
+			String response = cmdController.executeCommand("new train " + train);
+			String check = response.substring(response.indexOf(" ") + 11);
+			if (check.equals("exists")) {
+				trainNameTextField.setText("Train already exist");
+			} else {
+				train = addTrain(train);
+				currentTrain = trainDropDown.getSelectedIndex();
+
+				try {
 					drawTrain(train);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			 }
-			 System.out.println(response);
-			 } catch (SQLException e) {
-			 // TODO Auto-generated catch block
-			 e.printStackTrace();
-			 }
-			 
-//			if (train != null && train.trim().length() > 0) {
-//
-//				// save train
-//				Railroad railroad = new Railroad();
-//				Controller ControllerInst = new Controller(railroad);
-//				TrainDaoImpl newtrain = new TrainDaoImpl();
-//				try {
-//					if (!train.equals("Train already exist")) {
-//						if (ControllerInst.createTrain(train) != null) {
-////							ControllerInst.createTrain(train);
-//							train = addTrain(train);
-//							currentTrain = trainDropDown.getSelectedIndex();
-////							newtrain.save(train);
-//							drawTrain(train);
-//							System.out.println(train);	
-//							Start.leftOutput.append("<< new train " + train + "\n");
-//							Start.rightOutput.append(">> train " + train + " created" + "\n");
-//						} else {
-//							trainNameTextField.setText("Train already exist");
-//						}
-//					}
-//				} catch (SQLException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-		} else if (event.getSource() == btnChooseTrain) {
-
-			if (trainDropDown.getItemCount() > 0) {
-				String selection = (String) trainDropDown.getSelectedItem();
-				selectedTrain.setText("selected: " + selection);
-				int ti = trainDropDown.getSelectedIndex();
-				if (ti != currentTrain) {
-					numberOfWagons.put(currentTrain, currentNumberOfWagons);
-				}
-				currentTrain = ti;
-				try {
-					currentNumberOfWagons = (Integer) numberOfWagons.get(currentTrain);
-				} catch (Exception e) {
-					currentNumberOfWagons = 0;
-				}
 			}
-		} else if (event.getSource() == btnDeleteTrain) {
-			if (trainDropDown.getItemCount() > 0) {
-				String t = (String) trainDropDown.getSelectedItem();
-				trainDropDown.removeItemAt(trainDropDown.getSelectedIndex());
-				numberOfWagons.remove(t);
-				repaint();
-				if ((String) trainDropDown.getSelectedItem() != null) {
-					currentTrain = trainDropDown.getSelectedIndex();
-					selectedTrain.setText("selected: " + (String) trainDropDown.getSelectedItem());
-				} else {
-					currentTrain = 0;
-					selectedTrain.setText("selected: ");
-				}
-			}
-		} else if (event.getSource() == btnAddWagon1) {
-			currentNumberOfWagons++;
-			String wagon1 = WagonnameTextfield1.getText();
-			try {
-				drawWagon(205, 0);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			wagonType = 1;
-			try {
-				cmdController.executeCommand("new wagon " + wagon1);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if (event.getSource() == btnAddWagon2) {
-			currentNumberOfWagons++;
-			String wagon2 = WagonnameTextfield2.getText();
-			try {
-				drawWagon(410, 0);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			wagonType = 2;
-			try {
-				cmdController.executeCommand("new wagon " + wagon2);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if (event.getSource() == btnAddWagon3) {
-			currentNumberOfWagons++;
-			String wagon3 = WagonnameTextfield3.getText();
-			try {
-				drawWagon(615, 0);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			wagonType = 3;
-			try {
-				cmdController.executeCommand("new wagon " + wagon3);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if (event.getSource() == btnDeleteWagon1) {
-			if (wagonType == 1) {
-				currentNumberOfWagons--;
-				repaint(225, 0, OFFSET, OFFSET);
-			}
-		} else if (event.getSource() == btnDeleteWagon2) {
-			if (wagonType == 2) {
-				currentNumberOfWagons--;
-				repaint(425, 0, OFFSET, OFFSET);
-				wagonType = 1;
-			}
-
+			System.out.println(response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
 
-		else if (event.getSource() == btnDeleteWagon3) {
-			if (wagonType == 3) {
-				currentNumberOfWagons--;
-				repaint(635, 0, OFFSET, OFFSET);
-				wagonType = 2;
-			}
-
+	public void DeleteTrain() {
+		String train = trainNameTextField.getText();
+		try {
+			String t = (String) trainDropDown.getSelectedItem();
+			trainDropDown.removeItemAt(trainDropDown.getSelectedIndex());
+			numberOfWagons.remove(t);
+			cmdController.executeCommand("delete train " + train);
+			trainNameTextField.setText("");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		repaint();
+
+	}
+
+	public void AddWagon() throws SQLException, IOException {
+		String wagonname = WagonnameTextfield1.getText();
+		String trainname = trainNameTextField.getText();
+		String seats = null;
+		String seatscustom = SeatsTextfield1.getText();
+		try {
+
+			cmdController.executeCommand("new wagon " + wagonname);
+			cmdController.executeCommand("add " + wagonname + " to " + trainname);
+			if (SeatsTextfield1.getText().equals("")) {
+				seats = cmdController.executeCommand("getnumseats wagon " + wagonname);
+				drawWagon(wagonlocation, 0, wagonname, seats);
+			}
+			else {
+				drawWagon(wagonlocation, 0, wagonname, seatscustom);
+			}
+			wagonlocation = wagonlocation + 210;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void btnChooseTrain() {
+		if (trainDropDown.getItemCount() > 0) {
+			String selection = (String) trainDropDown.getSelectedItem();
+			selectedTrain.setText("selected: " + selection);
+			int ti = trainDropDown.getSelectedIndex();
+			if (ti != currentTrain) {
+				numberOfWagons.put(currentTrain, currentNumberOfWagons);
+			}
+			currentTrain = ti;
+			try {
+				currentNumberOfWagons = (Integer) numberOfWagons.get(currentTrain);
+			} catch (Exception e) {
+				currentNumberOfWagons = 0;
+			}
+		}
+	}
+
+	public void DeleteWagon() {
+		String wagonname = WagonnameTextfield1.getText();
+		wagonlocation = wagonlocation - 210;
+		mainScreen.repaint(wagonlocation, 0, 800, 500);
+		try {
+			cmdController.executeCommand("delete wagon " + wagonname);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		trainNameTextField.setText("");
 	}
 
 	public String addTrain(String train) {
@@ -453,20 +384,22 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 
 	}
 
-	public static void drawTrain(String train) throws IOException, SQLException {
-
+	public void drawTrain(String train) throws IOException, SQLException {
 		Graphics g = innerMainScreen.getGraphics();
 		if (train != "") {
 			image = ImageIO.read(new File("src/train.jpg"));
 			g.drawImage(image, 0, 0, null);
-		
+			g.drawString(trainNameTextField.getText(), wagonlocation - 100, 200);
+
 		}
 
 	}
 
-	public static void drawWagon(int width, int hight) throws IOException {
+	public void drawWagon(int width, int hight, String wagon, String seats) throws IOException, SQLException {
 		Graphics g = innerMainScreen.getGraphics();
 		image = ImageIO.read(new File("src/Wagon.png"));
 		g.drawImage(image, width, hight, null);
+		g.drawString(wagon, wagonlocation + 85, 200);
+		g.drawString(seats + "seats", wagonlocation + 115, 200);
 	}
 }
