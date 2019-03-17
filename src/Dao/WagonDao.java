@@ -8,7 +8,8 @@ import Model.Wagon;
 public interface WagonDao {
 	public List<Wagon> findAll() throws SQLException;
 	public List<Wagon> findWagonByTrainID(int trainID) throws SQLException;
-	public Boolean save(Wagon wagon) throws SQLException;
-	public Boolean update(Wagon wagon) throws SQLException;
-	public Boolean delete(Wagon wagon) throws SQLException;
+	public Boolean save(String wagonName, int numseats) throws SQLException;
+	public Boolean update(String wagonName) throws SQLException;
+	public Boolean delete(String wagonName) throws SQLException;
+	public Boolean addWagonToTrain(int trainID, String wagonName) throws SQLException;
 }

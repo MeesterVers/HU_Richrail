@@ -6,11 +6,11 @@ import java.util.*;
 import Model.Train;
 import Model.Wagon;
 
-public class WagonDaoImpl extends BaseDao implements WagonDao{
+public class WagonDaoImpl implements WagonDao{
 	private static Connection conn;
 	private List<Wagon> wagons = new ArrayList<Wagon>();
 
-	@Override
+
 	public List<Wagon> findAll() throws SQLException {
 		List<Wagon> wagons = new ArrayList<Wagon>();
 		conn = BaseDao.getConnection();
@@ -34,7 +34,7 @@ public class WagonDaoImpl extends BaseDao implements WagonDao{
 		return wagons;
 	}
 
-	@Override
+
 	public List<Wagon> findWagonByTrainID(int trainID) throws SQLException {
 		List<Wagon> wagons = new ArrayList<Wagon>();
 		conn = BaseDao.getConnection();
@@ -58,14 +58,13 @@ public class WagonDaoImpl extends BaseDao implements WagonDao{
 		return wagons;
 	}
 
-	@Override
-	public Boolean save(Wagon wagon) throws SQLException {
+	public Boolean save(String wagon, int numseats) throws SQLException {
 		conn = BaseDao.getConnection();
 		String query = "INSERT INTO wagons (id, name, seats) VALUES (WAGONS_SEQ.nextval, ?, ?)";
 
 		PreparedStatement statement = conn.prepareStatement(query);
-		statement.setString(1, wagon.getName());
-		statement.setInt(2, wagon.getnumSeats());
+		statement.setString(1, wagon);
+		statement.setInt(2, numseats);
 
 		int rowsInserted = statement.executeUpdate();
 		if (rowsInserted > 0) {
@@ -79,25 +78,38 @@ public class WagonDaoImpl extends BaseDao implements WagonDao{
 		}
 	}
 
-	@Override
 	public Boolean update(Wagon wagon) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Boolean delete(Wagon wagon) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean delete(String wagonName) throws SQLException {
+		conn = BaseDao.getConnection();
+		String query = "DELETE FROM WAGONS WHERE NAME = ?";
+
+		PreparedStatement statement = conn.prepareStatement(query);
+		statement.setString(1, wagonName);
+		
+		int rowsDeleted = statement.executeUpdate();
+		if (rowsDeleted > 0) {
+			System.out.println("wagon deleted");
+			conn.close();
+			return true;
+		} else {
+			System.out.println("wagon not deleted");
+			conn.close();
+			return false;
+		}
 	}
 	
-	public Boolean addWagonToTrain( Train train, Wagon wagon) throws SQLException{
+	public Boolean addWagonToTrain(int trainID, String wagon) throws SQLException{
 		conn = BaseDao.getConnection();
-		String UpdateQuery = "UPDATE wagons set train_id = ? WHERE id = ?";
+		String UpdateQuery = "UPDATE wagons set train_id = ? WHERE name = ?";
 		
 		PreparedStatement UpdateStatement = conn.prepareStatement(UpdateQuery);
-		UpdateStatement.setInt(1, train.getID());
-		UpdateStatement.setInt(2, wagon.getID());
+		UpdateStatement.setInt(1, trainID);
+		UpdateStatement.setString(2, wagon);
 
 		int rowsUpdated = UpdateStatement.executeUpdate();
 		if (rowsUpdated > 0) {
