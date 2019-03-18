@@ -63,7 +63,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	private int currentNumberOfWagons = 210;
 	private int currentTrain = -1;
 	private int OFFSET = 100;
-	private int wagonlocation = 205;
+	int wagonlocation = 205;
 	private JLabel Wagonname;
 	private JLabel Wagonseats;
 	static JTextField WagonnameTextfield1;
@@ -230,17 +230,19 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 
-	public String Gettrains(String trains) {
+	public void Gettrains() {
 		String command = "get all trains";
+		String trains = null;
 		try {
 			trains = cmdController.executeCommand(command);
+			trainDropDown.addItem(trains);
+			System.out.println(trains);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		trainDropDown.addItem(trains);
-		System.out.println(trains);
-		return trains;
+		
+		
 	}
 
 	public void actionPerformed(ActionEvent event) {
@@ -266,6 +268,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	}
 
 	public void AddTrain() {
+//		Gettrains();
 		String train = trainNameTextField.getText();
 		try {
 			String response = cmdController.executeCommand("new train " + train);

@@ -19,6 +19,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
+import Richrail.Gui;
+
 import Contollers.CommandController;
 
 @SuppressWarnings("serial")
@@ -37,6 +39,8 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 	public CommandController cmdController;
 
+	public Gui tGui;
+
 	private double[] weights = new double[] { 0.1, 0.1, 0.1, 0.1 };
 	private int[] heights = new int[] { 7, 7, 7, 7 };
 
@@ -54,6 +58,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	public Start() {
 		super();
 		this.cmdController = new CommandController();
+		this.tGui = new Gui();
 		initCLIGUI();
 	}
 
@@ -172,32 +177,34 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 			responseOutput(response);
 
-			String test = response.substring(0,1);
-			String afkorting = command.substring(4, 5);
 			String trainname = command.substring(command.indexOf(" ") + 1);
-			
+			String test = command.substring(0, 5);
+
 			System.out.println(test);
-			if (test.equals("T")) {
+			if (test.equals("new t")) {
 				Gui.trainNameTextField.setText(trainname);
-
-		
-
-					try {
-						Gui.drawTrain(trainname);
-					} catch (IOException | SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			
-			}
-		
-			String wagonname1 = null;
-			if (test.equals("W")) {
-				wagonname1 = command.substring(command.indexOf(" ") + 1);
-				Gui.WagonnameTextfield1.setText(wagonname1);
 				try {
-					Gui.drawWagon(205, 0);
+					tGui.drawTrain(trainname);
+				} catch (IOException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+			String wagonname = null;
+			if (test.equals("new w")) {
+				wagonname = command.substring(command.indexOf(" ") + 7);
+				Gui.WagonnameTextfield1.setText(wagonname);
+				try {
+					String seats = cmdController.executeCommand("getnumseats wagon " + wagonname);
+					Gui.SeatsTextfield1.setText(seats);
+					tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
+					tGui.wagonlocation = tGui.wagonlocation + 210;
 				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
