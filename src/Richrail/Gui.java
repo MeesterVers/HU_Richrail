@@ -446,6 +446,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	public void drawTrain(String train) throws IOException, SQLException {
 		Graphics g = innerMainScreen.getGraphics();
 		if (train != "") {
+			wagonlocation = 205;
 			image = ImageIO.read(new File("src/train.jpg"));
 			g.drawImage(image, 0, 0, null);
 			g.drawString(trainNameTextField.getText(), wagonlocation - 100, 200);

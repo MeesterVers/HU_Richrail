@@ -184,6 +184,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			System.out.println(test);
 			if (test.equals("new t") && !(response.equals("Train " + trainname + " already exists"))) {
 				Gui.trainNameTextField.setText(trainname);
+				tGui.wagonlocation = 205;
 				try {
 					tGui.drawTrain(trainname);
 				} catch (IOException | SQLException e) {
