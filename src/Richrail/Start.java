@@ -177,12 +177,12 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 			responseOutput(response);
 
-			String trainname = command.substring(command.indexOf(" ") + 1);
+			String trainname = command.substring(command.indexOf(" ") + 7);
 			String test = command.substring(0, 5);
-			String testdelete = command.substring(7,8);
+			String testdelete = command.substring(7, 8);
 
 			System.out.println(test);
-			if (test.equals("new t")) {
+			if (test.equals("new t") && !(response.equals("Train " + trainname + " already exists"))) {
 				Gui.trainNameTextField.setText(trainname);
 				try {
 					tGui.drawTrain(trainname);
@@ -193,38 +193,73 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 			}
 
-			String wagonname = null;
-			if (test.equals("new w")) {
-				wagonname = command.substring(command.indexOf(" ") + 7);
-				Gui.WagonnameTextfield1.setText(wagonname);
-				try {
-					String seats = cmdController.executeCommand("getnumseats wagon " + wagonname);
-					Gui.SeatsTextfield1.setText(seats);
-					tGui.wagonlocation = tGui.wagonlocation + 210;
-					tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			String wagonname = command.substring(command.indexOf(" ") + 7);
+			System.out.println(wagonname);
+			int length = command.length();
+			String numseats = command.substring(Math.max(command.length() - 2, 0));
+			String arr[] = command.split(" ");
+			System.out.println(numseats);
+			System.out.println(arr[2]);
+
+			if (test.equals("new w") && !response.equals("Wagon " + wagonname + " already exists")) {
+				if (!(length >= 20)) {
+					wagonname = command.substring(command.indexOf(" ") + 7);
+					Gui.WagonnameTextfield1.setText(wagonname);
+					try {
+						String seats = cmdController.executeCommand("getnumseats wagon " + wagonname);
+						Gui.SeatsTextfield1.setText(seats);
+						tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
+						tGui.wagonlocation = tGui.wagonlocation + 210;
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					wagonname = arr[2];
+					Gui.WagonnameTextfield1.setText(wagonname);
+					try {
+						String seats = arr[4];
+						Gui.SeatsTextfield1.setText(seats);
+						tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
+						tGui.wagonlocation = tGui.wagonlocation + 210;
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			System.out.println(testdelete);
-			if (testdelete.equals("w")) {
-				tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
+
+			if (testdelete.equals("w") && tGui.WagonnameTextfield1.getText().equals(wagonname)
+					&& !response.equals("Wagon " + wagonname + " does not exists")) {
 				tGui.wagonlocation = tGui.wagonlocation - 210;
+				if (tGui.wagonlocation < 200) {
+					tGui.wagonlocation = 205;
+					tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
+				} else {
+					tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
+				}
+				tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
 				tGui.WagonnameTextfield1.setText("");
+				Gui.SeatsTextfield1.setText("");
 			}
-			
-			if (testdelete.equals("t")) {
+
+			System.out.println(trainname);
+			if (testdelete.equals("t") && tGui.trainNameTextField.getText().equals(trainname)
+					&& !response.equals("Train " + trainname + " does not exists")) {
 				tGui.wagonlocation = 205;
 				Gui.mainScreen.repaint(0, 0, 800, 500);
 				tGui.WagonnameTextfield1.setText("");
 				tGui.trainNameTextField.setText("");
 				tGui.SeatsTextfield1.setText("");
 			}
-			
+
 		}
 	}
 

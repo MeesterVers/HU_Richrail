@@ -148,7 +148,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 							GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 					trainDropDown.setModel(cbAllTrainsModel);
 				}
-				
+
 				{
 					btnChooseTrain = new JButton();
 					leftPanel.add(btnChooseTrain, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
@@ -241,8 +241,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 	}
 
 	public void actionPerformed(ActionEvent event) {
@@ -251,7 +250,12 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		} else if (event.getSource() == btnChooseTrain) {
 			btnChooseTrain();
 		} else if (event.getSource() == btnDeleteTrain) {
-			DeleteTrain();
+			try {
+				DeleteTrain();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else if (event.getSource() == btnAddWagon) {
 			try {
 				AddWagon();
@@ -263,56 +267,71 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 				e.printStackTrace();
 			}
 		} else if (event.getSource() == btnDeleteWagon) {
-			DeleteWagon();
+			try {
+				DeleteWagon();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public void AddTrain() {
-//		Gettrains();
+		// Gettrains();
 		String train = trainNameTextField.getText();
-		try {
-			String response = cmdController.executeCommand("new train " + train);
-			String check = response.substring(response.indexOf(" ") + 11);
-			if (check.equals("exists")) {
-				trainNameTextField.setText("Train already exist");
-			} else {
-				train = addTrain(train);
-				currentTrain = trainDropDown.getSelectedIndex();
+		if (!train.equals("")) {
+			try {
+				String response = cmdController.executeCommand("new train " + train);
+				String check = response.substring(response.indexOf(" ") + 11);
+				if (response.equals("Train " + train + " already exists")) {
+					trainNameTextField.setText("Train " + train + " already exists");
+					Start.leftOutput.append("<< new train " + train + "\n");
+					Start.rightOutput.append(">> Train " + train + " already exists" + "\n");
+				} else {
+					train = addTrain(train);
+					currentTrain = trainDropDown.getSelectedIndex();
 
-				try {
-					drawTrain(train);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					try {
+						drawTrain(train);
+						Start.leftOutput.append("<< new train " + train + "\n");
+						Start.rightOutput.append(">> train " + train + " created" + "\n");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
+				System.out.println(response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			Start.leftOutput.append("<< new train " + train + "\n");
-			Start.rightOutput.append(">> train " + train + " created" + "\n");
-			System.out.println(response);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
-	public void DeleteTrain() {
+	public void DeleteTrain() throws SQLException {
 		String train = trainNameTextField.getText();
-		try {
-			String t = (String) trainDropDown.getSelectedItem();
-			trainDropDown.removeItemAt(trainDropDown.getSelectedIndex());
-			numberOfWagons.remove(t);
-			cmdController.executeCommand("delete train " + train);
-			trainNameTextField.setText("");
-			SeatsTextfield1.setText("");
-			WagonnameTextfield1.setText("");
+		String response = cmdController.executeCommand("delete wagon " + train);
+		if (!response.equals("Train " + train + " does not exists")) {
+			try {
+				String t = (String) trainDropDown.getSelectedItem();
+				trainDropDown.removeItemAt(trainDropDown.getSelectedIndex());
+				numberOfWagons.remove(t);
+				cmdController.executeCommand("delete train " + train);
+				trainNameTextField.setText("");
+				SeatsTextfield1.setText("");
+				WagonnameTextfield1.setText("");
+				Start.leftOutput.append("<< delete train " + train + "\n");
+				Start.rightOutput.append(">> train " + train + " deleted" + "\n");
+				mainScreen.repaint(0, 0, 800, 800);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
 			Start.leftOutput.append("<< delete train " + train + "\n");
-			Start.rightOutput.append(">> train " + train + " deleted" + "\n");
-			mainScreen.repaint(0, 0, 800, 800);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Start.rightOutput.append(">> Train " + train + " does not exists" + "\n");
+			WagonnameTextfield1.setText("Train " + train + " does not exists");
 		}
-		
 
 	}
 
@@ -321,27 +340,36 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		String trainname = trainNameTextField.getText();
 		String seats = null;
 		String seatscustom = SeatsTextfield1.getText();
-		try {
-			
-			cmdController.executeCommand("new wagon " + wagonname);
-			cmdController.executeCommand("add " + wagonname + " to " + trainname);
-			if (SeatsTextfield1.getText().equals("")) {
-				seats = cmdController.executeCommand("getnumseats wagon " + wagonname);
-				drawWagon(wagonlocation, 0, wagonname, seats);
-				Start.leftOutput.append("<< new wagon " + wagonname + "\n");
-				Start.rightOutput.append(">> Wagon " + wagonname + " created" + "\n");
-				Start.rightOutput.append(">> Wagon " + wagonname + " added to train " + trainname + "\n");
+		String response = cmdController.executeCommand("new wagon " + wagonname);
+		if (!wagonname.equals("")) {
+			try {
+
+				cmdController.executeCommand("new wagon " + wagonname);
+				cmdController.executeCommand("add " + wagonname + " to " + trainname);
+				if (!response.equals("Wagon " + wagonname + " already exists")) {
+					if (SeatsTextfield1.getText().equals("")) {
+						seats = cmdController.executeCommand("getnumseats wagon " + wagonname);
+						drawWagon(wagonlocation, 0, wagonname, seats);
+						Start.leftOutput.append("<< new wagon " + wagonname + "\n");
+						Start.rightOutput.append(">> Wagon " + wagonname + " created" + "\n");
+						Start.rightOutput.append(">> Wagon " + wagonname + " added to train " + trainname + "\n");
+					} else {
+						drawWagon(wagonlocation, 0, wagonname, seatscustom);
+						Start.leftOutput.append("<< new wagon " + wagonname + " numseats " + seatscustom + "\n");
+						Start.rightOutput
+								.append(">> Wagon " + wagonname + " created with " + seatscustom + " seats" + "\n");
+						Start.rightOutput.append(">> Wagon " + wagonname + " added to train " + trainname + "\n");
+					}
+					wagonlocation = wagonlocation + 210;
+				} else {
+					Start.leftOutput.append("<< new wagon " + wagonname + "\n");
+					Start.rightOutput.append(">> Wagon " + wagonname + " already exists" + "\n");
+					WagonnameTextfield1.setText("Wagon " + wagonname + " already exists");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else {
-				drawWagon(wagonlocation, 0, wagonname, seatscustom);
-				Start.leftOutput.append("<< new wagon " + wagonname + " numseats " + seatscustom +"\n");
-				Start.rightOutput.append(">> Wagon " + wagonname + " created with " + seatscustom + " seats" + "\n");
-				Start.rightOutput.append(">> Wagon " + wagonname + " added to train " + trainname + "\n");
-			}
-			wagonlocation = wagonlocation + 210;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -362,19 +390,32 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 
-	public void DeleteWagon() {
+	public void DeleteWagon() throws SQLException {
 		String wagonname = WagonnameTextfield1.getText();
-		wagonlocation = wagonlocation - 210;
-		mainScreen.repaint(wagonlocation, 0, 800, 500);
-		try {
-			cmdController.executeCommand("delete wagon " + wagonname);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		String response = cmdController.executeCommand("delete wagon " + wagonname);
+		if (!response.equals("Wagon " + wagonname + " does not exists")) {
+			wagonlocation = wagonlocation - 210;
+			if (wagonlocation < 205) {
+				wagonlocation = 205;
+				mainScreen.repaint(wagonlocation, 0, 800, 500);
+			} else {
+				mainScreen.repaint(wagonlocation, 0, 800, 500);
+			}
+			try {
+				cmdController.executeCommand("delete wagon " + wagonname);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Start.leftOutput.append("<< delete wagon " + wagonname + "\n");
+			Start.rightOutput.append(">> Wagon " + wagonname + " deleted" + "\n");
+			WagonnameTextfield1.setText("");
+			SeatsTextfield1.setText("");
+		} else {
+			Start.leftOutput.append("<< delete wagon " + wagonname + "\n");
+			Start.rightOutput.append(">> Wagon " + wagonname + " does not exists" + "\n");
+			WagonnameTextfield1.setText("Wagon " + wagonname + " does not exists");
 		}
-		Start.leftOutput.append("<< delete wagon " + wagonname + "\n");
-		Start.rightOutput.append(">> Wagon " + wagonname + " deleted" + "\n");
-		WagonnameTextfield1.setText("");
 	}
 
 	public String addTrain(String train) {
