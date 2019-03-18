@@ -1,24 +1,26 @@
 package Dao;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-import Model.Train;
 import Model.Wagon;
 
-public class WagonDaoImpl implements WagonDao{
+public class WagonDaoImpl implements WagonDao {
 	private static Connection conn;
-	private List<Wagon> wagons = new ArrayList<Wagon>();
-
 
 	public List<Wagon> findAll() throws SQLException {
 		List<Wagon> wagons = new ArrayList<Wagon>();
 		conn = BaseDao.getConnection();
-		
+
 		String query = "SELECT * FROM wagons";
 		Statement statement = conn.createStatement();
 		ResultSet result = statement.executeQuery(query);
-		
+
 		while (result.next()) {
 			int ID = result.getInt("id");
 			String name = result.getString("name");
@@ -34,17 +36,16 @@ public class WagonDaoImpl implements WagonDao{
 		return wagons;
 	}
 
-
 	public List<Wagon> findWagonByTrainID(int trainID) throws SQLException {
 		List<Wagon> wagons = new ArrayList<Wagon>();
 		conn = BaseDao.getConnection();
-		
+
 		String query = "SELECT * FROM wagons WHERE train_id = ?";
-		
+
 		PreparedStatement statement = conn.prepareStatement(query);
 		statement.setInt(1, trainID);
 		ResultSet result = statement.executeQuery();
-		
+
 		while (result.next()) {
 			int ID = result.getInt("id");
 			String name = result.getString("name");
@@ -73,16 +74,11 @@ public class WagonDaoImpl implements WagonDao{
 			System.out.println("SUCCESS");
 			conn.close();
 			return true;
-		}else {
+		} else {
 			System.out.println("NO SUCCESS");
 			conn.close();
 			return false;
 		}
-	}
-
-	public Boolean update(String wagonName) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public Boolean delete(String wagonName) throws SQLException {
@@ -91,7 +87,7 @@ public class WagonDaoImpl implements WagonDao{
 
 		PreparedStatement statement = conn.prepareStatement(query);
 		statement.setString(1, wagonName);
-		
+
 		int rowsDeleted = statement.executeUpdate();
 		if (rowsDeleted > 0) {
 			conn.close();
@@ -101,11 +97,11 @@ public class WagonDaoImpl implements WagonDao{
 			return false;
 		}
 	}
-	
-	public Boolean addWagonToTrain(int trainID, String wagonName) throws SQLException{
+
+	public Boolean addWagonToTrain(int trainID, String wagonName) throws SQLException {
 		conn = BaseDao.getConnection();
 		String UpdateQuery = "UPDATE wagons set train_id = ? WHERE name = ?";
-		
+
 		PreparedStatement UpdateStatement = conn.prepareStatement(UpdateQuery);
 		UpdateStatement.setInt(1, trainID);
 		UpdateStatement.setString(2, wagonName);
@@ -120,10 +116,10 @@ public class WagonDaoImpl implements WagonDao{
 		}
 	}
 
-	public Boolean removeWagon(String wagonName) throws SQLException{
+	public Boolean removeWagon(String wagonName) throws SQLException {
 		conn = BaseDao.getConnection();
 		String UpdateQuery = "UPDATE wagons set train_id = ? WHERE name = ?";
-		
+
 		PreparedStatement UpdateStatement = conn.prepareStatement(UpdateQuery);
 		UpdateStatement.setInt(1, 0);
 		UpdateStatement.setString(2, wagonName);

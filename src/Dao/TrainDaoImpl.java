@@ -1,25 +1,27 @@
 package Dao;
 
-import java.sql.*;
-import java.sql.Date;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import Model.Train;
-import Model.Wagon;
 
-public class TrainDaoImpl implements TrainDao{
+public class TrainDaoImpl implements TrainDao {
 	private static Connection conn;
-	private List<Train> trains = new ArrayList<Train>();
-	
+
 	public List<Train> findAll() throws SQLException {
 		List<Train> trains = new ArrayList<Train>();
 		WagonDaoImpl wagonDaoImpl = new WagonDaoImpl();
 		conn = BaseDao.getConnection();
-		
+
 		String query = "SELECT * FROM trains ORDER BY ID DESC";
 		Statement statement = conn.createStatement();
 		ResultSet result = statement.executeQuery(query);
-		
+
 		while (result.next()) {
 			int ID = result.getInt("id");
 			String name = result.getString("name");
@@ -33,7 +35,7 @@ public class TrainDaoImpl implements TrainDao{
 		result.close();
 		return trains;
 	}
-	
+
 	public Boolean save(String trainName) throws SQLException {
 		conn = BaseDao.getConnection();
 		String query = "INSERT INTO trains (id, name) VALUES (TRAINS_SEQ.nextval, ?)";
@@ -46,25 +48,24 @@ public class TrainDaoImpl implements TrainDao{
 			System.out.println("SUCCESS");
 			conn.close();
 			return true;
-		}else {
+		} else {
 			System.out.println("NO SUCCESS");
 			conn.close();
 			return false;
 		}
 	}
 
-
 	public Train findTrainByName(String trainName) throws SQLException {
 		conn = BaseDao.getConnection();
 		WagonDao wagonDaoImpl = new WagonDaoImpl();
 		Train foundTrain = null;
-		
+
 		String query = "SELECT * FROM TRAINS WHERE name = ?";
-		
+
 		PreparedStatement statement = conn.prepareStatement(query);
 		statement.setString(1, trainName);
 		ResultSet result = statement.executeQuery();
-		
+
 		while (result.next()) {
 			int ID = result.getInt("id");
 			String name = result.getString("name");
@@ -78,19 +79,13 @@ public class TrainDaoImpl implements TrainDao{
 		return foundTrain;
 	}
 
-	@Override
-	public Boolean update(String trainName) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	public Boolean delete(String trainName) throws SQLException {
 		conn = BaseDao.getConnection();
 		String query = "DELETE FROM TRAINS WHERE NAME = ?";
 
 		PreparedStatement statement = conn.prepareStatement(query);
 		statement.setString(1, trainName);
-		
+
 		int rowsDeleted = statement.executeUpdate();
 		if (rowsDeleted > 0) {
 			System.out.println("train deleted");

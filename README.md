@@ -1,10 +1,13 @@
 # Hogeschool Utrecht SIE Richrail Project
 
-This repo is for the 
+This repo is for Rich rail
 
 ## Getting Started
 
-This is A Java FX project
+This is a java FX project, with a oracle database. Please use the install (DB.sql) script to create the projects database
+The connetion:
+	- Username: RICHRAIL_ADMIN
+	- Password: richrail_admin1234
 ............................
 
 ## Built With
@@ -14,7 +17,9 @@ This is A Java FX project
 
 ## Author/Owner
 
-* **Kadeem Vers** - *Initial work* - [MeesterVers](https://github.com/MeesterVers)
+* **Kadeem Vers** - [MeesterVers](https://github.com/MeesterVers)
+* **Hamza** - [hamzboy99](https://github.com/hamzboy99/)
+* **Noetie** - [Yennutiebat](https://github.com/Yennutiebat/)
 
 ## License
 
