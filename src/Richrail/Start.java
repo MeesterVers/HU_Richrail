@@ -212,8 +212,8 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			}
 			System.out.println(testdelete);
 			if (testdelete.equals("w")) {
-				tGui.wagonlocation = tGui.wagonlocation + 210;
 				tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
+				tGui.wagonlocation = tGui.wagonlocation - 210;
 				tGui.WagonnameTextfield1.setText("");
 			}
 			
