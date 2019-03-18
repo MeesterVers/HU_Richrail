@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,8 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
-
-import Richrail.Gui;
 
 import Contollers.CommandController;
 
@@ -34,8 +33,6 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	private JTextField CommandField;
 	static JTextArea rightOutput;
 	static JTextArea leftOutput;
-
-	private JButton openGui;
 
 	public CommandController cmdController;
 
@@ -147,14 +144,6 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 			RightPanel.add(rightOutput, new GridBagConstraints(0, 0, 4, 3, 0.0, 0.0, GridBagConstraints.EAST,
 					GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
-			// openGui Button
-			// openGui = new JButton();
-			// RightPanel.add(openGui, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0,
-			// GridBagConstraints.CENTER,
-			// GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-			// openGui.setText("openGui");
-			// openGui.addActionListener(this);
-
 			pack();
 			setSize(1000, 800);
 		} catch (Exception e) {
@@ -162,27 +151,34 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 
+	// Button click actions
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == ExecuteButton) {
+			// Get command from command inputfield
 			String command = CommandField.getText();
+			// Place command on leftOutput
 			leftOutput.append("<< " + command + "\n");
 
 			String response = null;
 			try {
+				// execute command
 				response = cmdController.executeCommand(command);
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
+			// Set response on screen
 			responseOutput(response);
 
+			// Get trainname from command
 			String trainname = command.substring(command.indexOf(" ") + 7);
 			String test = command.substring(0, 5);
 			String testdelete = command.substring(7, 8);
 
-			System.out.println(test);
+			// Place Train on Gui
 			if (test.equals("new t") && !(response.equals("Train " + trainname + " already exists"))) {
+				// Set trainname inputfield from Gui.java
 				Gui.trainNameTextField.setText(trainname);
 				tGui.wagonlocation = 205;
 				try {
@@ -194,20 +190,24 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 			}
 
+			// Get wagonname from command
 			String wagonname = command.substring(command.indexOf(" ") + 7);
-			System.out.println(wagonname);
-			int length = command.length();
-			String numseats = command.substring(Math.max(command.length() - 2, 0));
-			String arr[] = command.split(" ");
-			System.out.println(numseats);
-			System.out.println(arr[2]);
 
+			// Split command
+			int length = command.length();
+			String arr[] = command.split(" ");
+
+			// Place wagon on Gui
 			if (test.equals("new w") && !response.equals("Wagon " + wagonname + " already exists")) {
 				if (!(length >= 20)) {
+					// Get wagonname from command
 					wagonname = command.substring(command.indexOf(" ") + 7);
+					// Set wagonname inputfield from Gui.java
 					Gui.WagonnameTextfield1.setText(wagonname);
 					try {
+						// Get numseats
 						String seats = cmdController.executeCommand("getnumseats wagon " + wagonname);
+						// Place numseats in seats input field from Gui.java
 						Gui.SeatsTextfield1.setText(seats);
 						tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
 						tGui.wagonlocation = tGui.wagonlocation + 210;
@@ -219,10 +219,15 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 						e.printStackTrace();
 					}
 				} else {
+					// if command is like new wagon "wagonname" numseats "number"
+					// Gets wagonname from command
 					wagonname = arr[2];
+					// Place wagonname on wagonname input field from Gui.java
 					Gui.WagonnameTextfield1.setText(wagonname);
 					try {
+						// Gets seatsnumber from command
 						String seats = arr[4];
+						// Place seatsnumber on numseats input field from Gui.java
 						Gui.SeatsTextfield1.setText(seats);
 						tGui.wagonlocation = tGui.wagonlocation + 210;
 						tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
@@ -235,38 +240,39 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 					}
 				}
 			}
-			System.out.println(testdelete);
 
+			// Delete Wagon from Gui
+			// Checks if command is like delete wagon "wagonname"
 			if (testdelete.equals("w") && tGui.WagonnameTextfield1.getText().equals(wagonname)
 					&& !response.equals("Wagon " + wagonname + " does not exists")) {
-				if (tGui.wagonlocation < 200) {
+				if (tGui.wagonlocation < 210) {
 					tGui.wagonlocation = 205;
+					// deletes wagon from outputscreen Gui.java
 					tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
 				} else {
-					tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
+					// deletes wagon from outputscreen Gui.java
 					tGui.wagonlocation = tGui.wagonlocation - 210;
+					tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
 				}
-				tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
 				tGui.WagonnameTextfield1.setText("");
 				Gui.SeatsTextfield1.setText("");
 			}
 
-			System.out.println(trainname);
+			// Delete train from Gui
 			if (testdelete.equals("t") && tGui.trainNameTextField.getText().equals(trainname)
 					&& !response.equals("Train " + trainname + " does not exists")) {
 				tGui.wagonlocation = 205;
+				// deletes train from outputscreen Gui.java
 				Gui.mainScreen.repaint(0, 0, 800, 500);
+				// Clear all inputfields from Gui.java
 				tGui.WagonnameTextfield1.setText("");
 				tGui.trainNameTextField.setText("");
 				tGui.SeatsTextfield1.setText("");
 			}
-
 		}
 	}
 
-	// Gui.trainNameTextField.setText(trainname);
-	// Gui.main(null);
-
+	// place response on richtOutput screen
 	public void responseOutput(String response) {
 		rightOutput.append(">> " + response + "\n");
 	}
