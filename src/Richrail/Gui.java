@@ -394,12 +394,12 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		String wagonname = WagonnameTextfield1.getText();
 		String response = cmdController.executeCommand("delete wagon " + wagonname);
 		if (!response.equals("Wagon " + wagonname + " does not exists")) {
-			wagonlocation = wagonlocation - 210;
-			if (wagonlocation < 205) {
+			if (wagonlocation < 210) {
 				wagonlocation = 205;
 				mainScreen.repaint(wagonlocation, 0, 800, 500);
 			} else {
 				mainScreen.repaint(wagonlocation, 0, 800, 500);
+				wagonlocation = wagonlocation - 210;
 			}
 			try {
 				cmdController.executeCommand("delete wagon " + wagonname);

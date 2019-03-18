@@ -223,8 +223,8 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 					try {
 						String seats = arr[4];
 						Gui.SeatsTextfield1.setText(seats);
-						tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
 						tGui.wagonlocation = tGui.wagonlocation + 210;
+						tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -238,12 +238,12 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 			if (testdelete.equals("w") && tGui.WagonnameTextfield1.getText().equals(wagonname)
 					&& !response.equals("Wagon " + wagonname + " does not exists")) {
-				tGui.wagonlocation = tGui.wagonlocation - 210;
 				if (tGui.wagonlocation < 200) {
 					tGui.wagonlocation = 205;
 					tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
 				} else {
 					tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
+					tGui.wagonlocation = tGui.wagonlocation - 210;
 				}
 				tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
 				tGui.WagonnameTextfield1.setText("");
