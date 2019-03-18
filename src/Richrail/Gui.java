@@ -35,7 +35,7 @@ import Contollers.CommandController;
  * ANY CORPORATE OR COMMERCIAL PURPOSE.
  */
 public class Gui extends javax.swing.JFrame implements ActionListener {
-	private JPanel mainScreen;
+	static JPanel mainScreen;
 	private static JPanel innerMainScreen;
 	private JPanel rightPanel;
 	private JPanel leftPanel;
@@ -286,6 +286,8 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 					e.printStackTrace();
 				}
 			}
+			Start.leftOutput.append("<< new train " + train + "\n");
+			Start.rightOutput.append(">> train " + train + " created" + "\n");
 			System.out.println(response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -301,11 +303,16 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 			numberOfWagons.remove(t);
 			cmdController.executeCommand("delete train " + train);
 			trainNameTextField.setText("");
+			SeatsTextfield1.setText("");
+			WagonnameTextfield1.setText("");
+			Start.leftOutput.append("<< delete train " + train + "\n");
+			Start.rightOutput.append(">> train " + train + " deleted" + "\n");
+			mainScreen.repaint(0, 0, 800, 800);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		repaint();
+		
 
 	}
 
@@ -315,15 +322,21 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		String seats = null;
 		String seatscustom = SeatsTextfield1.getText();
 		try {
-
+			
 			cmdController.executeCommand("new wagon " + wagonname);
 			cmdController.executeCommand("add " + wagonname + " to " + trainname);
 			if (SeatsTextfield1.getText().equals("")) {
 				seats = cmdController.executeCommand("getnumseats wagon " + wagonname);
 				drawWagon(wagonlocation, 0, wagonname, seats);
+				Start.leftOutput.append("<< new wagon " + wagonname + "\n");
+				Start.rightOutput.append(">> Wagon " + wagonname + " created" + "\n");
+				Start.rightOutput.append(">> Wagon " + wagonname + " added to train " + trainname + "\n");
 			}
 			else {
 				drawWagon(wagonlocation, 0, wagonname, seatscustom);
+				Start.leftOutput.append("<< new wagon " + wagonname + " numseats " + seatscustom +"\n");
+				Start.rightOutput.append(">> Wagon " + wagonname + " created with " + seatscustom + " seats" + "\n");
+				Start.rightOutput.append(">> Wagon " + wagonname + " added to train " + trainname + "\n");
 			}
 			wagonlocation = wagonlocation + 210;
 		} catch (SQLException e) {
@@ -359,7 +372,9 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		trainNameTextField.setText("");
+		Start.leftOutput.append("<< delete wagon " + wagonname + "\n");
+		Start.rightOutput.append(">> Wagon " + wagonname + " deleted" + "\n");
+		WagonnameTextfield1.setText("");
 	}
 
 	public String addTrain(String train) {

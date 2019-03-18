@@ -179,6 +179,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 
 			String trainname = command.substring(command.indexOf(" ") + 1);
 			String test = command.substring(0, 5);
+			String testdelete = command.substring(7,8);
 
 			System.out.println(test);
 			if (test.equals("new t")) {
@@ -199,8 +200,8 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 				try {
 					String seats = cmdController.executeCommand("getnumseats wagon " + wagonname);
 					Gui.SeatsTextfield1.setText(seats);
-					tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
 					tGui.wagonlocation = tGui.wagonlocation + 210;
+					tGui.drawWagon(tGui.wagonlocation, 0, wagonname, seats);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -209,6 +210,21 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 					e.printStackTrace();
 				}
 			}
+			System.out.println(testdelete);
+			if (testdelete.equals("w")) {
+				tGui.wagonlocation = tGui.wagonlocation + 210;
+				tGui.mainScreen.repaint(tGui.wagonlocation, 0, 800, 500);
+				tGui.WagonnameTextfield1.setText("");
+			}
+			
+			if (testdelete.equals("t")) {
+				tGui.wagonlocation = 205;
+				Gui.mainScreen.repaint(0, 0, 800, 500);
+				tGui.WagonnameTextfield1.setText("");
+				tGui.trainNameTextField.setText("");
+				tGui.SeatsTextfield1.setText("");
+			}
+			
 		}
 	}
 
