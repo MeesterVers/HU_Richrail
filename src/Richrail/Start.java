@@ -60,7 +60,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	}
 
 	// Create the GUI
-	private void initCLIGUI() {
+	public void initCLIGUI() {
 		try {
 			this.setTitle("RichRail");
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

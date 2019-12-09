@@ -52,6 +52,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	private JButton btnAddWagon;
 	private JButton btnDeleteTrain;
 	public JButton btnNewTrain;
+	public JButton btnViewTrains;
 
 	public CommandController cmdController;
 
@@ -85,6 +86,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		this.cmdController = new CommandController();
 	}
 
+	
 	// Create the GUI
 	private void initGUI() {
 		try {
@@ -145,6 +147,13 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 					btnDeleteTrain.setText("delete train");
 					btnDeleteTrain.addActionListener(this);
 				}
+				{
+					btnViewTrains = new JButton();
+					leftPanel.add(btnViewTrains, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+					btnViewTrains.setText("View All Trains and Wagons");
+					btnViewTrains.addActionListener(this);
+				}
 			}
 			{
 				// Right Panel
@@ -204,6 +213,8 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 	// Button click actions
 	public void actionPerformed(ActionEvent event) {
@@ -233,8 +244,16 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}else if (event.getSource() == btnViewTrains) {
+			Alltrains();
+			}
 	}
+		
+		public void Alltrains() {
+			ViewTrains gui = new ViewTrains();
+			gui.setLocationRelativeTo(null);
+			gui.setVisible(true);
+		}
 
 	// Add train
 	public void AddTrain() {
