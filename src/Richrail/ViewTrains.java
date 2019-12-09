@@ -165,7 +165,18 @@ public class ViewTrains extends javax.swing.JFrame implements ActionListener{
 				g.drawString(train.getName(), wagonlocation - 100, y);
 				y= y + 200;
 				img_y = img_y + 200;
-				drawWagon();
+				int id= train.getID();
+				List<Wagon> Wagons = wagondao.findWagonByTrainID(id);
+				for (Wagon wagon: Wagons) {
+					
+					image = ImageIO.read(new File("src/Wagon.png"));
+					g.drawImage(image, wagonlocation, img_y - 200, null);
+					g.drawString(wagon.getName(), wagonlocation + 85, y -200);
+					// Set wagonname on image
+					g.drawString(wagon.getnumSeats() + "seats", wagonlocation + 140, y - 200);
+					wagonlocation = wagonlocation + 210;
+				}
+
 			}
 		}
 
@@ -173,6 +184,14 @@ public class ViewTrains extends javax.swing.JFrame implements ActionListener{
 			List<Wagon> Wagons = wagondao.findAll();
 			Graphics g = innerMainScreen.getGraphics();
 			for (Wagon wagon: Wagons) {
+				int trainid = wagon.getTrain_id();
+				if (trainid == wagon.getTrain_id()) {
+					image = ImageIO.read(new File("src/Wagon.png"));
+					g.drawImage(image, wagonlocation, 0, null);
+					g.drawString(wagon.getName(), wagonlocation + 85, 200);
+					// Set wagonname on image
+					g.drawString(wagon.getnumSeats() + "seats", wagonlocation + 115, 200);
+				} else {
 			image = ImageIO.read(new File("src/Wagon.png"));
 			g.drawImage(image, wagonlocation, wagon_img_y, null);
 			g.drawString(wagon.getName(), wagonlocation + 85, wgn_y);
@@ -180,6 +199,7 @@ public class ViewTrains extends javax.swing.JFrame implements ActionListener{
 			g.drawString(wagon.getnumSeats() + "seats", wagonlocation + 115, wgn_y);
 			wgn_y = wgn_y + 200;
 			wagon_img_y = wagon_img_y + 200;
+				}
 		}
 		}
 }

@@ -42,6 +42,14 @@ public class Wagon {
 	}
 	
 
+	public int getTrain_id() {
+		return train_id;
+	}
+
+	public void setTrain_id(int train_id) {
+		this.train_id = train_id;
+	}
+
 	public String toString() {
 		return "Wagon name = " + name + ", number of seats = " + numseats + "\n";
 	}

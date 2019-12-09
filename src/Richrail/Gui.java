@@ -54,7 +54,8 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	public JButton btnNewTrain;
 	public JButton btnViewTrains;
 
-	public CommandController cmdController;
+	CommandController cmdController = new CommandController();
+
 
 	private JComboBox<String> trainDropDown;
 
@@ -423,6 +424,6 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		g.drawImage(image, width, hight, null);
 		g.drawString(wagon, wagonlocation + 85, 200);
 		// Set wagonname on image
-		g.drawString(seats + "seats", wagonlocation + 115, 200);
+		g.drawString(seats + "seats", wagonlocation + 140, 200);
 	}
 }
