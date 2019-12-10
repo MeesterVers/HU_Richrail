@@ -52,8 +52,10 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 	private JButton btnAddWagon;
 	private JButton btnDeleteTrain;
 	public JButton btnNewTrain;
+	public JButton btnViewTrains;
 
-	public CommandController cmdController;
+	CommandController cmdController = new CommandController();
+
 
 	private JComboBox<String> trainDropDown;
 
@@ -85,6 +87,7 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		this.cmdController = new CommandController();
 	}
 
+	
 	// Create the GUI
 	private void initGUI() {
 		try {
@@ -145,6 +148,13 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 					btnDeleteTrain.setText("delete train");
 					btnDeleteTrain.addActionListener(this);
 				}
+				{
+					btnViewTrains = new JButton();
+					leftPanel.add(btnViewTrains, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+					btnViewTrains.setText("View All Trains and Wagons");
+					btnViewTrains.addActionListener(this);
+				}
 			}
 			{
 				// Right Panel
@@ -204,6 +214,8 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 	// Button click actions
 	public void actionPerformed(ActionEvent event) {
@@ -233,8 +245,16 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}else if (event.getSource() == btnViewTrains) {
+			Alltrains();
+			}
 	}
+		
+		public void Alltrains() {
+			ViewTrains gui = new ViewTrains();
+			gui.setLocationRelativeTo(null);
+			gui.setVisible(true);
+		}
 
 	// Add train
 	public void AddTrain() {
@@ -404,6 +424,6 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		g.drawImage(image, width, hight, null);
 		g.drawString(wagon, wagonlocation + 85, 200);
 		// Set wagonname on image
-		g.drawString(seats + "seats", wagonlocation + 115, 200);
+		g.drawString(seats + "seats", wagonlocation + 140, 200);
 	}
 }

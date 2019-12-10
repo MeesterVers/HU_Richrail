@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CommandController {	
+public class CommandController implements ControllerInterface{	
 	private Controller ControllerInst;
 	
 	public CommandController() {		

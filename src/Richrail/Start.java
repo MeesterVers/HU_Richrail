@@ -21,6 +21,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
 import Contollers.CommandController;
+import Contollers.ControllerInterface;
 
 @SuppressWarnings("serial")
 public class Start extends javax.swing.JFrame implements ActionListener {
@@ -33,9 +34,9 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	private JTextField CommandField;
 	static JTextArea rightOutput;
 	static JTextArea leftOutput;
-
-	public CommandController cmdController;
-
+	
+	CommandController cmdController = new CommandController();
+	
 	public Gui tGui;
 
 	private double[] weights = new double[] { 0.1, 0.1, 0.1, 0.1 };
@@ -60,7 +61,7 @@ public class Start extends javax.swing.JFrame implements ActionListener {
 	}
 
 	// Create the GUI
-	private void initCLIGUI() {
+	public void initCLIGUI() {
 		try {
 			this.setTitle("RichRail");
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
