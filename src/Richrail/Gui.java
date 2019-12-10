@@ -136,23 +136,23 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 				}
 				{
 					btnNewTrain = new JButton();
-					leftPanel.add(btnNewTrain, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+					leftPanel.add(btnNewTrain, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
 							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 					btnNewTrain.setText("make new train");
 					btnNewTrain.addActionListener(this);
 				}
 				{
 					btnDeleteTrain = new JButton();
-					leftPanel.add(btnDeleteTrain, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
-							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+					leftPanel.add(btnDeleteTrain, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+							GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 					btnDeleteTrain.setText("delete train");
 					btnDeleteTrain.addActionListener(this);
 				}
 				{
 					btnViewTrains = new JButton();
-					leftPanel.add(btnViewTrains, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+					leftPanel.add(btnViewTrains, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
 							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					btnViewTrains.setText("View All Trains and Wagons");
+					btnViewTrains.setText("View all trains");
 					btnViewTrains.addActionListener(this);
 				}
 			}
@@ -178,33 +178,33 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 				{
 					WagonnameTextfield1 = new JTextField(10);
 					rightPanel.add(WagonnameTextfield1, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+							GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				}
 				{
 					btnAddWagon = new JButton();
-					rightPanel.add(btnAddWagon, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+					rightPanel.add(btnAddWagon, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
 							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 					btnAddWagon.setText("add wagon");
 					btnAddWagon.addActionListener(this);
 				}
 				{
 					btnDeleteWagon = new JButton();
-					rightPanel.add(btnDeleteWagon, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-							GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+					rightPanel.add(btnDeleteWagon, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+							GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 					btnDeleteWagon.setText("delete wagon");
 					btnDeleteWagon.addActionListener(this);
 				}
 				{
 					Wagonseats = new JLabel();
 
-					rightPanel.add(Wagonseats, new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0, GridBagConstraints.WEST,
+					rightPanel.add(Wagonseats, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
 							GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					Wagonseats.setText("seats: ");
+					Wagonseats.setText("seats optional: ");
 				}
 				{
 					SeatsTextfield1 = new JTextField(10);
-					rightPanel.add(SeatsTextfield1, new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0,
-							GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+					rightPanel.add(SeatsTextfield1, new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0,
+							GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				}
 			}
 			pack();
@@ -325,7 +325,14 @@ public class Gui extends javax.swing.JFrame implements ActionListener {
 		String wagonname = WagonnameTextfield1.getText();
 		String trainname = trainNameTextField.getText();
 		String seatscustom = SeatsTextfield1.getText();
-		String response = cmdController.executeCommand("new wagon " + wagonname);
+		String response;
+		
+		if (seatscustom.equals("")) {
+			 response = cmdController.executeCommand("new wagon " + wagonname);
+		}else{
+			response = cmdController.executeCommand("new wagon " + wagonname + " numseats " + seatscustom);
+		}
+
 		if (!wagonname.equals("")) {
 			try {
 				cmdController.executeCommand("new wagon " + wagonname);
